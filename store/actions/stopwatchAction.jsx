@@ -1,11 +1,11 @@
 
-export const TOGGLE_FAVORITE = 'TOGGLE_FAVORITE';
+export const START_TIMER = 'START_TIMER';
 export const SET_FILTERS = 'SET_FILTERS';
 
 
-export const toggleFavorite = (receivedInfo) => ({
-  type: TOGGLE_FAVORITE,
-  extraInfo: receivedInfo,
+export const startTimer = (startTimerState) => ({
+  type: START_TIMER,
+  newState: startTimerState,
 });
 
 export const setFilters = (filtersSettings) => ({

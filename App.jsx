@@ -8,12 +8,12 @@ import { Provider } from 'react-redux';
 import { enableScreens } from 'react-native-screens';
 
 import StopwatchNavigator from './navigation/StopwatchNavigator';
-import templateReducer from './store/reducers/templateReducer';
+import stopwatchReducer from './store/reducers/stopwatchReducer';
 
 enableScreens();
 
 const rootReducer = combineReducers({
-  template: templateReducer,
+  stopwatch: stopwatchReducer,
 });
 
 const store = createStore(rootReducer);
