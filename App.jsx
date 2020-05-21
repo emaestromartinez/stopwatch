@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 
 import { enableScreens } from 'react-native-screens';
 
-import TemplateNavigator from './navigation/TemplateNavigator';
+import StopwatchNavigator from './navigation/StopwatchNavigator';
 import templateReducer from './store/reducers/templateReducer';
 
 enableScreens();
@@ -42,7 +42,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <TemplateNavigator />
+      <StopwatchNavigator />
     </Provider>
   );
 }
