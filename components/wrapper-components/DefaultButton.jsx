@@ -12,7 +12,10 @@ const DefaultButton = (props) => {
   } = props;
   return (
     <TouchableOpacity disabled={disabled} onPress={onPress}>
-      <View style={{ backgroundColor: color, ...styles.button, ...style }}>
+      <View style={!disabled
+        ? { backgroundColor: color, ...styles.button, ...style }
+        : { backgroundColor: color, ...styles.disabledButton, ...style }}
+      >
         <BodyText style={styles.buttonText}>{children}</BodyText>
       </View>
     </TouchableOpacity>
@@ -26,6 +29,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 25,
     alignItems: 'center',
+  },
+  disabledButton: {
+    backgroundColor: Colors.primary,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 25,
+    alignItems: 'center',
+    opacity: 0.5,
   },
   buttonText: {
     fontSize: 16,
