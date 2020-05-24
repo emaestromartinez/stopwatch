@@ -8,9 +8,10 @@ const DefaultButton = (props) => {
     children,
     onPress,
     color,
+    disabled,
   } = props;
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity disabled={disabled} onPress={onPress}>
       <View style={{ backgroundColor: color, ...styles.button, ...style }}>
         <BodyText style={styles.buttonText}>{children}</BodyText>
       </View>
