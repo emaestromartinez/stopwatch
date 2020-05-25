@@ -24,14 +24,18 @@ const StopwatchScreen = (props) => {
   const currentTimer = useSelector((state) => state.stopwatch);
 
   const dispatch = useDispatch();
-  let eventDate = useSelector((state) => state.stopwatch.eventDate);
+  // let eventDate = useSelector((state) => state.stopwatch.eventDate);
+  // let isTimerPaused = useSelector((state) => state.stopwatch.isTimerPaused);
+  let { eventDate } = currentTimer;
+  const { days, hours, mins, secs, isTimerRunning, isTimerPaused } = currentTimer;
+
   if (eventDate === undefined) {
     eventDate = moment.duration().add({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   }
 
   const startInterval = () => {
     const interval = setInterval(() => {
-      if (eventDate <= 0) {
+      if (!eventDate || eventDate <= 0) {
         clearInterval(interval);
         const newTimer = {
           eventDate: undefined,
@@ -39,15 +43,19 @@ const StopwatchScreen = (props) => {
           hours: 0,
           mins: 0,
           secs: 0,
+          isTimerRunning: false,
+          isTimerPaused: false,
         };
         dispatch(updateTimer(newTimer));
-      } else {
+      } else if (!isTimerPaused) {
         const newTimer = {
           eventDate: eventDate.subtract(1, 's'),
           days: eventDate.days(),
           hours: eventDate.hours(),
           mins: eventDate.minutes(),
           secs: eventDate.seconds(),
+          isTimerRunning: !!eventDate.seconds(),
+          isTimerPaused: false,
         };
         dispatch(updateTimer(newTimer));
       }
@@ -60,7 +68,7 @@ const StopwatchScreen = (props) => {
     return () => {
       clearInterval(interval);
     };
-  }, [eventDate]);
+  }, [eventDate, isTimerPaused, isTimerRunning]);
 
   const startTimerHandler = useCallback(() => {
     const initialStartedTimer = {
@@ -68,8 +76,9 @@ const StopwatchScreen = (props) => {
       days: 0,
       hours: 0,
       mins: 0,
-      secs: 0,
+      secs: 12,
       isTimerRunning: true,
+      isTimerPaused: false,
     };
     dispatch(updateTimer(initialStartedTimer));
   }, [dispatch]);
@@ -82,15 +91,22 @@ const StopwatchScreen = (props) => {
       mins: 0,
       secs: 0,
       isTimerRunning: false,
+      isTimerPaused: false,
     };
     dispatch(updateTimer(stoppedTimer));
   }, [dispatch]);
 
   const pauseTimerHandler = useCallback(() => {
+    const pausedTimer = {
+      isTimerPaused: true,
+    };
+    dispatch(pauseTimer(pausedTimer));
+  }, [dispatch]);
+
+  const resumeTimerHandler = useCallback(() => {
     console.log(currentTimer);
   }, [dispatch]);
 
-  const { days, hours, mins, secs, isTimerRunning } = currentTimer;
 
   return (
     <View style={styles.screen}>

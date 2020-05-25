@@ -1,6 +1,7 @@
 
 export const START_TIMER = 'START_TIMER';
 export const PAUSE_TIMER = 'PAUSE_TIMER';
+export const RESUME_TIMER = 'RESUME_TIMER';
 export const STOP_TIMER = 'STOP_TIMER';
 export const UPDATE_TIMER = 'UPDATE_TIMER';
 
@@ -13,6 +14,10 @@ export const startTimer = (startTimerState) => ({
 export const pauseTimer = (pauseTimerState) => ({
   type: PAUSE_TIMER,
   newState: pauseTimerState,
+});
+export const resumeTimer = (resumeTimerState) => ({
+  type: PAUSE_TIMER,
+  newState: resumeTimerState,
 });
 export const stopTimer = (stopTimerState) => ({
   type: STOP_TIMER,
