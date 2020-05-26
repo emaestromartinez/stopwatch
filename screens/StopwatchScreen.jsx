@@ -17,6 +17,7 @@ import { startTimer, pauseTimer, stopTimer, updateTimer } from '../store/actions
 
 import HeaderButton from '../components/wrapper-components/HeaderButton';
 import DefaultButton from '../components/wrapper-components/DefaultButton';
+import IconTextButton from '../components/wrapper-components/IconTextButton';
 
 
 const StopwatchScreen = (props) => {
@@ -104,26 +105,35 @@ const StopwatchScreen = (props) => {
   }, [dispatch]);
 
   const resumeTimerHandler = useCallback(() => {
-    console.log(currentTimer);
+    const pausedTimer = {
+      isTimerPaused: false,
+    };
+    dispatch(pauseTimer(pausedTimer));
   }, [dispatch]);
 
+  const pauseResumeButton = isTimerPaused
+    ? (
+      <IconTextButton onPress={resumeTimerHandler} style={styles.button} text="Resume">
+        <Ionicons name="md-play" size={24} color="white" />
+      </IconTextButton>
+    )
+    : (
+      <IconTextButton onPress={pauseTimerHandler} style={styles.button} text="Pause">
+        <Ionicons name="md-pause" size={24} color="white" />
+      </IconTextButton>
+    );
 
   return (
     <View style={styles.screen}>
       <Text style={styles.timeStyles}>{`${days} : ${hours} : ${mins} : ${secs}`}</Text>
       <View style={styles.buttonsContainer}>
-        <DefaultButton onPress={stopTimerHandler} style={styles.button}>
+        <IconTextButton onPress={stopTimerHandler} style={styles.button} text="Stop">
           <Ionicons name="ios-square" size={24} color="white" />
-          <Text> Stop </Text>
-        </DefaultButton>
-        <DefaultButton disabled={isTimerRunning} onPress={startTimerHandler} style={styles.button}>
+        </IconTextButton>
+        <IconTextButton disabled={isTimerRunning} onPress={startTimerHandler} style={styles.button} text="Start">
           <Ionicons name="md-play" size={24} color="white" />
-          <Text> Start </Text>
-        </DefaultButton>
-        <DefaultButton onPress={pauseTimerHandler} style={styles.button}>
-          <Ionicons name="md-pause" size={24} color="white" />
-          <Text> Pause </Text>
-        </DefaultButton>
+        </IconTextButton>
+        {pauseResumeButton}
       </View>
     </View>
   );
@@ -156,7 +166,7 @@ const styles = StyleSheet.create({
   },
   button: {
     height: 60,
-    width: 80,
+    width: 95,
     justifyContent: 'center',
   },
   timeStyles: {
