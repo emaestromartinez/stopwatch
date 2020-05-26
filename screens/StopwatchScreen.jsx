@@ -1,8 +1,12 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import {
   View,
   StyleSheet,
   Text,
+  TouchableWithoutFeedback,
+  Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
 } from 'react-native';
 import moment from 'moment';
 import { Stopwatch, Timer } from 'react-native-stopwatch-timer';
@@ -12,9 +16,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
 
+import { TextInput } from 'react-native-paper';
 import { startTimer, pauseTimer, stopTimer, updateTimer } from '../store/actions/stopwatchAction';
 
 
+import Input from '../components/wrapper-components/Input';
 import HeaderButton from '../components/wrapper-components/HeaderButton';
 import DefaultButton from '../components/wrapper-components/DefaultButton';
 import IconTextButton from '../components/wrapper-components/IconTextButton';
@@ -22,11 +28,24 @@ import IconTextButton from '../components/wrapper-components/IconTextButton';
 
 const StopwatchScreen = (props) => {
   const { navigation } = props;
+
+  // Timer inputs things;
+  const [secondsInput, setSecondsInput] = useState('');
+  const [minutesInput, setMinutesInput] = useState(0);
+  const [hoursInput, setHoursInput] = useState(0);
+  const [daysInput, setDaysInput] = useState(0);
+
+  const onChangeSecondsHandler = (inputText) => {
+    if (inputText === '0') setSecondsInput('');
+    else setSecondsInput(inputText.replace(/[^0-9]/g, ''));
+  };
+
+
+  // Timer interval things;
   const currentTimer = useSelector((state) => state.stopwatch);
 
   const dispatch = useDispatch();
-  // let eventDate = useSelector((state) => state.stopwatch.eventDate);
-  // let isTimerPaused = useSelector((state) => state.stopwatch.isTimerPaused);
+
   let { eventDate } = currentTimer;
   const { days, hours, mins, secs, isTimerRunning, isTimerPaused } = currentTimer;
 
@@ -73,16 +92,17 @@ const StopwatchScreen = (props) => {
 
   const startTimerHandler = useCallback(() => {
     const initialStartedTimer = {
-      eventDate: moment.duration().add({ days: 0, hours: 0, minutes: 0, seconds: 12 }),
+      eventDate: moment.duration().add({ days: 0, hours: 0, minutes: 0, seconds: secondsInput }),
       days: 0,
       hours: 0,
       mins: 0,
-      secs: 12,
+      secs: secondsInput || 0,
       isTimerRunning: true,
       isTimerPaused: false,
     };
+    console.log(secondsInput);
     dispatch(updateTimer(initialStartedTimer));
-  }, [dispatch]);
+  }, [dispatch, secondsInput]);
 
   const stopTimerHandler = useCallback(() => {
     const stoppedTimer = {
@@ -111,31 +131,73 @@ const StopwatchScreen = (props) => {
     dispatch(pauseTimer(pausedTimer));
   }, [dispatch]);
 
-  const pauseResumeButton = isTimerPaused
-    ? (
-      <IconTextButton onPress={resumeTimerHandler} style={styles.button} text="Resume">
-        <Ionicons name="md-play" size={24} color="white" />
-      </IconTextButton>
-    )
-    : (
-      <IconTextButton onPress={pauseTimerHandler} style={styles.button} text="Pause">
-        <Ionicons name="md-pause" size={24} color="white" />
-      </IconTextButton>
-    );
+
+  // Timer layout;
+  const pauseResumeButton = isTimerPaused ? (
+    <IconTextButton onPress={resumeTimerHandler} style={styles.button} text="Resume">
+      <Ionicons name="md-play" size={24} color="white" />
+    </IconTextButton>
+  ) : (
+    <IconTextButton
+      disabled={!isTimerRunning}
+      onPress={pauseTimerHandler}
+      style={styles.button}
+      text="Pause"
+    >
+      <Ionicons name="md-pause" size={24} color="white" />
+    </IconTextButton>
+  );
 
   return (
-    <View style={styles.screen}>
-      <Text style={styles.timeStyles}>{`${days} : ${hours} : ${mins} : ${secs}`}</Text>
-      <View style={styles.buttonsContainer}>
-        <IconTextButton onPress={stopTimerHandler} style={styles.button} text="Stop">
-          <Ionicons name="ios-square" size={24} color="white" />
-        </IconTextButton>
-        <IconTextButton disabled={isTimerRunning} onPress={startTimerHandler} style={styles.button} text="Start">
-          <Ionicons name="md-play" size={24} color="white" />
-        </IconTextButton>
-        {pauseResumeButton}
+  // <KeyboardAvoidingView behavior="position" keyboardVerticalOffset="30">
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}
+    >
+      <View style={styles.screen}>
+        <View style={styles.inputsContainer}>
+
+          <View style={styles.inputContainer}>
+            <Input
+              style={styles.timerInput}
+              value={secondsInput}
+              onChangeText={(value) => onChangeSecondsHandler(value)}
+              keyboardType="numeric"
+              blurOnSubmit
+              maxLength={4}
+            />
+            <Text style={styles.inputText}>Seconds</Text>
+          </View>
+
+        </View>
+
+        <View style={styles.timerContainer}>
+          <Text style={styles.timeStyles}>
+            {`${days} : ${hours} : ${mins} : ${secs}`}
+          </Text>
+          <View style={styles.buttonsContainer}>
+            <IconTextButton
+              onPress={stopTimerHandler}
+              style={styles.button}
+              text="Stop"
+            >
+              <Ionicons name="ios-square" size={24} color="white" />
+            </IconTextButton>
+            <IconTextButton
+              disabled={isTimerRunning}
+              onPress={startTimerHandler}
+              style={styles.button}
+              text="Start"
+            >
+              <Ionicons name="md-play" size={24} color="white" />
+            </IconTextButton>
+            {pauseResumeButton}
+          </View>
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
+  // </KeyboardAvoidingView>
   );
 };
 StopwatchScreen.navigationOptions = (navData) => ({
@@ -157,6 +219,34 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    marginVertical: 35,
+  },
+  inputsContainer: {
+    flexDirection: 'row',
+    width: '65%',
+    height: '40%',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    marginBottom: 45,
+  },
+  inputContainer: {
+    // flexDirection: 'row',
+    alignItems: 'center',
+  },
+  inputText: {
+    fontSize: 20,
+  },
+  timerInput: {
+    height: 60,
+    width: 95,
+    backgroundColor: 'lightgreen',
+    fontSize: 25,
+    textAlign: 'center',
+  },
+  timerContainer: {
+    height: '60%',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   buttonsContainer: {
     flexDirection: 'row',
