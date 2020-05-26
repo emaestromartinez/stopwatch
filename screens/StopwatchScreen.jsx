@@ -91,12 +91,13 @@ const StopwatchScreen = (props) => {
   }, [eventDate, isTimerPaused, isTimerRunning]);
 
   const startTimerHandler = useCallback(() => {
+    const newEventDate = moment.duration().add({ days: 0, hours: 0, minutes: 0, seconds: secondsInput });
     const initialStartedTimer = {
-      eventDate: moment.duration().add({ days: 0, hours: 0, minutes: 0, seconds: secondsInput }),
-      days: 0,
-      hours: 0,
-      mins: 0,
-      secs: secondsInput || 0,
+      eventDate: newEventDate,
+      days: newEventDate.days(),
+      hours: newEventDate.hours(),
+      mins: newEventDate.minutes(),
+      secs: newEventDate.seconds(),
       isTimerRunning: true,
       isTimerPaused: false,
     };
@@ -174,7 +175,7 @@ const StopwatchScreen = (props) => {
 
         <View style={styles.timerContainer}>
           <Text style={styles.timeStyles}>
-            {`${days} : ${hours} : ${mins} : ${secs}`}
+            {`${days} : ${hours} : ${(mins === 0 || mins < 10) ? `0${mins}` : mins} : ${secs}`}
           </Text>
           <View style={styles.buttonsContainer}>
             <IconTextButton
