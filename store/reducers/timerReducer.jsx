@@ -1,4 +1,11 @@
-import { START_TIMER, PAUSE_TIMER, RESUME_TIMER, UPDATE_TIMER, STOP_TIMER, SET_FILTERS } from '../actions/stopwatchAction';
+import {
+  START_TIMER,
+  PAUSE_TIMER,
+  RESUME_TIMER,
+  UPDATE_TIMER,
+  STOP_TIMER,
+  SET_FILTERS,
+} from '../actions/timerAction';
 
 const initialState = {
   eventDate: undefined,
@@ -10,7 +17,7 @@ const initialState = {
   isTimerPaused: false,
 };
 
-const stopwatchReducer = (state = initialState, action) => {
+const timerReducer = (state = initialState, action) => {
   switch (action.type) {
     case START_TIMER:
       return { ...state, ...action.newState };
@@ -35,4 +42,4 @@ const stopwatchReducer = (state = initialState, action) => {
   }
 };
 
-export default stopwatchReducer;
+export default timerReducer;

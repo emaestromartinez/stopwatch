@@ -8,7 +8,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 // import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 
 import Colors from '../constants/colors';
-import StopwatchScreen from '../screens/StopwatchScreen';
+import TimerScreen from '../screens/TimerScreen';
 
 
 const defaultStackNavOptions = {
@@ -30,7 +30,7 @@ const defaultStackNavOptions = {
 const MainNavigator = createStackNavigator(
   {
     FirstScreen: {
-      screen: StopwatchScreen,
+      screen: TimerScreen,
     },
   },
   {

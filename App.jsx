@@ -7,13 +7,13 @@ import { Provider } from 'react-redux';
 
 import { enableScreens } from 'react-native-screens';
 
-import StopwatchNavigator from './navigation/StopwatchNavigator';
-import stopwatchReducer from './store/reducers/stopwatchReducer';
+import TimerNavigator from './navigation/TimerNavigator';
+import timerReducer from './store/reducers/timerReducer';
 
 enableScreens();
 
 const rootReducer = combineReducers({
-  stopwatch: stopwatchReducer,
+  timer: timerReducer,
 });
 
 const store = createStore(rootReducer);
@@ -42,7 +42,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <StopwatchNavigator />
+      <TimerNavigator />
     </Provider>
   );
 }

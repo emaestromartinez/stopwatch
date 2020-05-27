@@ -8,7 +8,6 @@ import {
   Alert,
 } from 'react-native';
 import moment from 'moment';
-import { Stopwatch, Timer } from 'react-native-stopwatch-timer';
 
 import { Ionicons } from '@expo/vector-icons';
 
@@ -16,16 +15,17 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { TextInput } from 'react-native-paper';
-import { startTimer, pauseTimer, stopTimer, updateTimer } from '../store/actions/stopwatchAction';
+import { startTimer, pauseTimer, stopTimer, updateTimer } from '../store/actions/timerAction';
 
 
 import Input from '../components/wrapper-components/Input';
 import HeaderButton from '../components/wrapper-components/HeaderButton';
 import DefaultButton from '../components/wrapper-components/DefaultButton';
 import IconTextButton from '../components/wrapper-components/IconTextButton';
+import DayHourMinSec from '../components/render-components/DayHourMinSec';
 
 
-const StopwatchScreen = (props) => {
+const TimerScreen = (props) => {
   const { navigation } = props;
 
   // Timer inputs things;
@@ -43,7 +43,7 @@ const StopwatchScreen = (props) => {
 
 
   // Timer interval things;
-  const currentTimer = useSelector((state) => state.stopwatch);
+  const currentTimer = useSelector((state) => state.timer);
 
   const dispatch = useDispatch();
 
@@ -54,7 +54,7 @@ const StopwatchScreen = (props) => {
     eventDate = moment.duration().add({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   }
 
-  const startInterval = () => {
+  const startInterval = (secondsAtA) => {
     const interval = setInterval(() => {
       if (!eventDate || eventDate <= 0) {
         clearInterval(interval);
@@ -83,6 +83,7 @@ const StopwatchScreen = (props) => {
     }, 1000);
     return interval;
   };
+
   useEffect(() => {
     console.log('howmanytimesamIrunningstartintervalioo');
     const interval = startInterval();
@@ -93,18 +94,19 @@ const StopwatchScreen = (props) => {
 
   const startTimerHandler = useCallback(() => {
     // Assert that proper values are inserted;
-    if (
-      // secondsInput >= 60 && (minutesInput !== 0 || !minutesInput)
-      secondsInput >= 60 && minutesInput
-    ) {
-      Alert.alert("Don't liee!", 'You know that this is wrong hehe', [
-        { text: 'Sorry!', style: 'cancel' },
+    if (secondsInput >= 60 && minutesInput) {
+      Alert.alert('Correct your times!', 'If seconds are higher than 60, the minute field must be empty.', [
+        { text: 'Sorry Mr. Sexyman, won\'t happen again!', style: 'cancel' },
       ]);
       return;
     }
 
-
-    const newEventDate = moment.duration().add({ days: 0, hours: 0, minutes: minutesInput, seconds: secondsInput });
+    const newEventDate = moment
+      .duration()
+      .add({ days: 0, hours: 0, minutes: minutesInput, seconds: secondsInput });
+    if (!newEventDate) {
+      return;
+    }
     const initialStartedTimer = {
       eventDate: newEventDate,
       days: newEventDate.days(),
@@ -114,8 +116,6 @@ const StopwatchScreen = (props) => {
       isTimerRunning: true,
       isTimerPaused: false,
     };
-
-
     dispatch(updateTimer(initialStartedTimer));
   }, [dispatch, secondsInput, minutesInput]);
 
@@ -197,11 +197,7 @@ const StopwatchScreen = (props) => {
         </View>
 
         <View style={styles.timerContainer}>
-          <Text style={styles.timeStyles}>
-            {`${days} : ${hours} : ${
-              mins === 0 || mins < 10 ? `0${mins}` : mins
-            } : ${secs === 0 || secs < 10 ? `0${secs}` : secs}`}
-          </Text>
+          <DayHourMinSec style={styles.timeStyles} days={days} hours={hours} mins={mins} secs={secs} />
           <View style={styles.buttonsContainer}>
             <IconTextButton
               onPress={stopTimerHandler}
@@ -226,7 +222,7 @@ const StopwatchScreen = (props) => {
     // </KeyboardAvoidingView>
   );
 };
-StopwatchScreen.navigationOptions = (navData) => ({
+TimerScreen.navigationOptions = (navData) => ({
   headerTitle: 'Stop watch',
   headerLeft: () => (
     <HeaderButtons HeaderButtonComponent={HeaderButton}>
@@ -285,10 +281,8 @@ const styles = StyleSheet.create({
     width: 95,
     justifyContent: 'center',
   },
-  timeStyles: {
-    fontSize: 45,
-  },
+
 
 });
 
-export default StopwatchScreen;
+export default TimerScreen;
