@@ -5,8 +5,7 @@ import {
   Text,
   TouchableWithoutFeedback,
   Keyboard,
-  KeyboardAvoidingView,
-  ScrollView,
+  Alert,
 } from 'react-native';
 import moment from 'moment';
 import { Stopwatch, Timer } from 'react-native-stopwatch-timer';
@@ -31,13 +30,15 @@ const StopwatchScreen = (props) => {
 
   // Timer inputs things;
   const [secondsInput, setSecondsInput] = useState('');
-  const [minutesInput, setMinutesInput] = useState(0);
-  const [hoursInput, setHoursInput] = useState(0);
-  const [daysInput, setDaysInput] = useState(0);
+  const [minutesInput, setMinutesInput] = useState('');
 
   const onChangeSecondsHandler = (inputText) => {
     if (inputText === '0') setSecondsInput('');
     else setSecondsInput(inputText.replace(/[^0-9]/g, ''));
+  };
+  const onChangeMinutesHandler = (inputText) => {
+    if (inputText === '0') setSecondsInput('');
+    else setMinutesInput(inputText.replace(/[^0-9]/g, ''));
   };
 
 
@@ -74,7 +75,7 @@ const StopwatchScreen = (props) => {
           hours: eventDate.hours(),
           mins: eventDate.minutes(),
           secs: eventDate.seconds(),
-          isTimerRunning: !!eventDate.seconds(),
+          isTimerRunning: !!eventDate,
           isTimerPaused: false,
         };
         dispatch(updateTimer(newTimer));
@@ -91,7 +92,19 @@ const StopwatchScreen = (props) => {
   }, [eventDate, isTimerPaused, isTimerRunning]);
 
   const startTimerHandler = useCallback(() => {
-    const newEventDate = moment.duration().add({ days: 0, hours: 0, minutes: 0, seconds: secondsInput });
+    // Assert that proper values are inserted;
+    if (
+      // secondsInput >= 60 && (minutesInput !== 0 || !minutesInput)
+      secondsInput >= 60 && minutesInput
+    ) {
+      Alert.alert("Don't liee!", 'You know that this is wrong hehe', [
+        { text: 'Sorry!', style: 'cancel' },
+      ]);
+      return;
+    }
+
+
+    const newEventDate = moment.duration().add({ days: 0, hours: 0, minutes: minutesInput, seconds: secondsInput });
     const initialStartedTimer = {
       eventDate: newEventDate,
       days: newEventDate.days(),
@@ -101,9 +114,10 @@ const StopwatchScreen = (props) => {
       isTimerRunning: true,
       isTimerPaused: false,
     };
-    console.log(secondsInput);
+
+
     dispatch(updateTimer(initialStartedTimer));
-  }, [dispatch, secondsInput]);
+  }, [dispatch, secondsInput, minutesInput]);
 
   const stopTimerHandler = useCallback(() => {
     const stoppedTimer = {
@@ -150,7 +164,7 @@ const StopwatchScreen = (props) => {
   );
 
   return (
-  // <KeyboardAvoidingView behavior="position" keyboardVerticalOffset="30">
+    // <KeyboardAvoidingView behavior="position" keyboardVerticalOffset="30">
     <TouchableWithoutFeedback
       onPress={() => {
         Keyboard.dismiss();
@@ -158,7 +172,17 @@ const StopwatchScreen = (props) => {
     >
       <View style={styles.screen}>
         <View style={styles.inputsContainer}>
-
+          <View style={styles.inputContainer}>
+            <Input
+              style={styles.timerInput}
+              value={minutesInput}
+              onChangeText={(value) => onChangeMinutesHandler(value)}
+              keyboardType="numeric"
+              blurOnSubmit
+              maxLength={4}
+            />
+            <Text style={styles.inputText}> Minutes </Text>
+          </View>
           <View style={styles.inputContainer}>
             <Input
               style={styles.timerInput}
@@ -170,12 +194,13 @@ const StopwatchScreen = (props) => {
             />
             <Text style={styles.inputText}>Seconds</Text>
           </View>
-
         </View>
 
         <View style={styles.timerContainer}>
           <Text style={styles.timeStyles}>
-            {`${days} : ${hours} : ${(mins === 0 || mins < 10) ? `0${mins}` : mins} : ${secs}`}
+            {`${days} : ${hours} : ${
+              mins === 0 || mins < 10 ? `0${mins}` : mins
+            } : ${secs === 0 || secs < 10 ? `0${secs}` : secs}`}
           </Text>
           <View style={styles.buttonsContainer}>
             <IconTextButton
@@ -198,7 +223,7 @@ const StopwatchScreen = (props) => {
         </View>
       </View>
     </TouchableWithoutFeedback>
-  // </KeyboardAvoidingView>
+    // </KeyboardAvoidingView>
   );
 };
 StopwatchScreen.navigationOptions = (navData) => ({
