@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
-import HeaderButton from '../components/wrapper-components/HeaderButton';
+import HeaderButton from '../wrapper-components/HeaderButton';
 
 
 const Header = (props) => {

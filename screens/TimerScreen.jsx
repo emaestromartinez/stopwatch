@@ -9,20 +9,17 @@ import {
 } from 'react-native';
 import moment from 'moment';
 
-import { Ionicons } from '@expo/vector-icons';
 
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { TextInput } from 'react-native-paper';
 import { startTimer, pauseTimer, stopTimer, updateTimer } from '../store/actions/timerAction';
 
 
 import Input from '../components/wrapper-components/Input';
 import HeaderButton from '../components/wrapper-components/HeaderButton';
-import DefaultButton from '../components/wrapper-components/DefaultButton';
-import IconTextButton from '../components/wrapper-components/IconTextButton';
 import DayHourMinSec from '../components/render-components/DayHourMinSec';
+import StopStartPauseButtons from '../components/render-components/StopStartPauseButtons';
 
 
 const TimerScreen = (props) => {
@@ -152,20 +149,7 @@ const TimerScreen = (props) => {
 
 
   // Timer layout;
-  const startResumeButton = isTimerPaused ? (
-    <IconTextButton onPress={resumeTimerHandler} style={styles.button} text="Resume">
-      <Ionicons name="md-play" size={24} color="white" />
-    </IconTextButton>
-  ) : (
-    <IconTextButton
-      disabled={isTimerRunning || (!secondsInput && !minutesInput)}
-      onPress={startTimerHandler}
-      style={styles.button}
-      text="Start"
-    >
-      <Ionicons name="md-play" size={24} color="white" />
-    </IconTextButton>
-  );
+
 
   return (
     // <KeyboardAvoidingView behavior="position" keyboardVerticalOffset="30">
@@ -202,25 +186,17 @@ const TimerScreen = (props) => {
 
         <View style={styles.timerContainer}>
           <DayHourMinSec style={styles.timeStyles} days={days} hours={hours} mins={mins} secs={secs} />
-          <View style={styles.buttonsContainer}>
-            <IconTextButton
-              disabled={!isTimerRunning}
-              onPress={stopTimerHandler}
-              style={styles.button}
-              text="Stop"
-            >
-              <Ionicons name="ios-square" size={24} color="white" />
-            </IconTextButton>
-            {startResumeButton}
-            <IconTextButton
-              disabled={isTimerPaused || !isTimerRunning}
-              onPress={pauseTimerHandler}
-              style={styles.button}
-              text="Pause"
-            >
-              <Ionicons name="md-pause" size={24} color="white" />
-            </IconTextButton>
-          </View>
+          <StopStartPauseButtons
+            isTimerRunning={isTimerRunning}
+            isTimerPaused={isTimerPaused}
+            secondsInput={secondsInput}
+            minutesInput={minutesInput}
+            stopTimerHandler={stopTimerHandler}
+            startTimerHandler={startTimerHandler}
+            resumeTimerHandler={resumeTimerHandler}
+            pauseTimerHandler={pauseTimerHandler}
+          />
+
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -274,17 +250,6 @@ const styles = StyleSheet.create({
     height: '60%',
     alignItems: 'center',
     justifyContent: 'flex-start',
-  },
-  buttonsContainer: {
-    flexDirection: 'row',
-    marginVertical: 10,
-    width: '75%',
-    justifyContent: 'space-evenly',
-  },
-  button: {
-    height: 60,
-    width: 95,
-    justifyContent: 'center',
   },
 
 
