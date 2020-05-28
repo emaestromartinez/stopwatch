@@ -24,7 +24,7 @@ const DayHourMinSec = (props) => {
   } else {
     displayedLayout = (
       <Text style={{ ...styles.timeStylesBig, ...style }}>
-        {`${mins === 0 || mins < 10 ? `0${mins}` : mins}m :${
+        {`${mins === 0 || mins < 10 ? `0${mins}` : mins}m : ${
           secs === 0 || secs < 10 ? `0${secs}` : secs}s`}
       </Text>
     );

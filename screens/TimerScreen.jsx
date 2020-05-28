@@ -204,6 +204,7 @@ const TimerScreen = (props) => {
           <DayHourMinSec style={styles.timeStyles} days={days} hours={hours} mins={mins} secs={secs} />
           <View style={styles.buttonsContainer}>
             <IconTextButton
+              disabled={!isTimerRunning}
               onPress={stopTimerHandler}
               style={styles.button}
               text="Stop"
