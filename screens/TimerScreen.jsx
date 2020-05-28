@@ -90,10 +90,14 @@ const TimerScreen = (props) => {
     return () => {
       clearInterval(interval);
     };
-  }, [eventDate, isTimerPaused, isTimerRunning]);
+  }, [isTimerPaused, isTimerRunning]);
 
   const startTimerHandler = useCallback(() => {
     // Assert that proper values are inserted;
+
+    if (!minutesInput) console.log('minutes are empty');
+    if (!secondsInput) console.log('seconds are empty');
+
     if (secondsInput >= 60 && minutesInput) {
       Alert.alert('Correct your times!', 'If seconds are higher than 60, the minute field must be empty.', [
         { text: 'Sorry Mr. Sexyman, won\'t happen again!', style: 'cancel' },
@@ -207,7 +211,7 @@ const TimerScreen = (props) => {
               <Ionicons name="ios-square" size={24} color="white" />
             </IconTextButton>
             <IconTextButton
-              disabled={isTimerRunning}
+              disabled={isTimerRunning || (!secondsInput && !minutesInput)}
               onPress={startTimerHandler}
               style={styles.button}
               text="Start"
