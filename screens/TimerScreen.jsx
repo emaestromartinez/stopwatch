@@ -152,18 +152,18 @@ const TimerScreen = (props) => {
 
 
   // Timer layout;
-  const pauseResumeButton = isTimerPaused ? (
+  const startResumeButton = isTimerPaused ? (
     <IconTextButton onPress={resumeTimerHandler} style={styles.button} text="Resume">
       <Ionicons name="md-play" size={24} color="white" />
     </IconTextButton>
   ) : (
     <IconTextButton
-      disabled={!isTimerRunning}
-      onPress={pauseTimerHandler}
+      disabled={isTimerRunning || (!secondsInput && !minutesInput)}
+      onPress={startTimerHandler}
       style={styles.button}
-      text="Pause"
+      text="Start"
     >
-      <Ionicons name="md-pause" size={24} color="white" />
+      <Ionicons name="md-play" size={24} color="white" />
     </IconTextButton>
   );
 
@@ -210,15 +210,15 @@ const TimerScreen = (props) => {
             >
               <Ionicons name="ios-square" size={24} color="white" />
             </IconTextButton>
+            {startResumeButton}
             <IconTextButton
-              disabled={isTimerRunning || (!secondsInput && !minutesInput)}
-              onPress={startTimerHandler}
+              disabled={isTimerPaused || !isTimerRunning}
+              onPress={pauseTimerHandler}
               style={styles.button}
-              text="Start"
+              text="Pause"
             >
-              <Ionicons name="md-play" size={24} color="white" />
+              <Ionicons name="md-pause" size={24} color="white" />
             </IconTextButton>
-            {pauseResumeButton}
           </View>
         </View>
       </View>
