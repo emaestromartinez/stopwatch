@@ -3,10 +3,10 @@ import {
   View,
   StyleSheet,
   Text,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
-  Switch,
 } from 'react-native';
 import moment from 'moment';
 
@@ -14,17 +14,19 @@ import moment from 'moment';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { startTimer, pauseTimer, stopTimer, updateTimer } from '../store/actions/timerAction';
+import { pauseTimer, updateTimer } from '../store/actions/timerAction';
 
 
 import Input from '../components/wrapper-components/Input';
 import HeaderButton from '../components/wrapper-components/HeaderButton';
 import DayHourMinSec from '../components/render-components/DayHourMinSec';
 import StopStartPauseButtons from '../components/render-components/StopStartPauseButtons';
+import DefaultText from '../components/wrapper-components/DefaultText';
 
 
-const TimerScreen = (props) => {
-  const { navigation } = props;
+const TimerScreen = () => {
+  // const TimerScreen = (props) => {
+  // const { navigation } = props;
 
   // Timer inputs things;
   const [secondsInput, setSecondsInput] = useState('');
@@ -48,7 +50,7 @@ const TimerScreen = (props) => {
     else setMinutesInput(inputText.replace(/[^0-9]/g, ''));
   };
   const hiddenTimerSwitchHandler = () => {
-
+    setIsTimerHidden((value) => !value);
   };
 
 
@@ -59,6 +61,7 @@ const TimerScreen = (props) => {
 
   let { eventDate } = currentTimer;
   const { days, hours, mins, secs, isTimerRunning, isTimerPaused } = currentTimer;
+  const isTimerFinished = (!eventDate || eventDate <= 0);
 
   if (eventDate === undefined) {
     eventDate = moment.duration().add({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -103,16 +106,14 @@ const TimerScreen = (props) => {
   }, [isTimerPaused, isTimerRunning]);
 
   const startTimerHandler = useCallback(() => {
-    // Assert that proper values are inserted;
-    if (!minutesInput) console.log('minutes are empty');
-    if (!secondsInput) console.log('seconds are empty');
-
     if (secondsInput >= 60 && minutesInput) {
+    // Assert that proper values are inserted;
       Alert.alert('Correct your times!', 'If seconds are higher than 60, the minute field must be empty.', [
         { text: 'Sorry Mr. Sexyman, won\'t happen again!', style: 'cancel' },
       ]);
       return;
     }
+    // setIsTimerHidden(false);
 
     const newEventDate = moment
       .duration()
@@ -133,6 +134,7 @@ const TimerScreen = (props) => {
   }, [dispatch, secondsInput, minutesInput]);
 
   const stopTimerHandler = useCallback(() => {
+    setIsTimerHidden(false);
     const stoppedTimer = {
       eventDate: moment.duration().add({ days: 0, hours: 0, minutes: 0, seconds: 0 }),
       days: 0,
@@ -159,10 +161,10 @@ const TimerScreen = (props) => {
     dispatch(pauseTimer(pausedTimer));
   }, [dispatch]);
 
+  let hideShowTimerText = 'Hide text!';
+  if (isTimerHidden) hideShowTimerText = 'Show text!';
 
   // TIMER LAYOUT;
-
-
   return (
     // <KeyboardAvoidingView behavior="position" keyboardVerticalOffset="30">
     <TouchableWithoutFeedback
@@ -198,9 +200,13 @@ const TimerScreen = (props) => {
         </View>
 
         <View style={styles.hideTimerContainer}>
-          <Text style={styles.hideTimerText}>
-            Quepasooo
-          </Text>
+          <TouchableOpacity onPress={hiddenTimerSwitchHandler}>
+            <View style={styles.hideTimerButton}>
+              <DefaultText style={styles.hideTimerText} numberOfLines={1}>
+                {hideShowTimerText}
+              </DefaultText>
+            </View>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.timerContainer}>
@@ -211,10 +217,12 @@ const TimerScreen = (props) => {
             mins={mins}
             secs={secs}
             hidden={isTimerHidden}
+            finished={isTimerFinished}
           />
           <StopStartPauseButtons
             isTimerRunning={isTimerRunning}
             isTimerPaused={isTimerPaused}
+            isTimerHidden={isTimerHidden}
             secondsInput={secondsInput}
             minutesInput={minutesInput}
             stopTimerHandler={stopTimerHandler}
@@ -247,7 +255,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 35,
+    paddingVertical: 35,
   },
   // Input styles
   inputsContainer: {
@@ -256,7 +264,7 @@ const styles = StyleSheet.create({
     height: '40%',
     alignItems: 'center',
     justifyContent: 'space-around',
-    marginBottom: 45,
+    // marginTop: 45,
   },
   inputText: {
     fontSize: 20,
@@ -265,13 +273,14 @@ const styles = StyleSheet.create({
   // Hide timer styles
   hideTimerContainer: {
     width: '40%',
-    marginVertical: 15,
-    borderWidth: 4,
+  },
+  hideTimerButton: {
+    borderWidth: 2,
     borderColor: 'black',
-    borderRadius: 10,
+    borderRadius: 150,
   },
   hideTimerText: {
-    fontSize: 35,
+    fontSize: 25,
   },
 
   // Input styles

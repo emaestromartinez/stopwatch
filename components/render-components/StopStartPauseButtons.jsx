@@ -13,6 +13,7 @@ const StopStartPauseButtons = (props) => {
     navigation,
     isTimerRunning,
     isTimerPaused,
+    isTimerHidden,
     minutesInput,
     secondsInput,
     stopTimerHandler,

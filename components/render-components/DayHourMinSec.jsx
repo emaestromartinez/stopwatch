@@ -2,11 +2,22 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
 const DayHourMinSec = (props) => {
-  const { style, days, hours, mins, secs, hidden } = props;
+  const { style, days, hours, mins, secs, hidden, finished } = props;
 
   let displayedLayout;
-  if (hidden) {
-    displayedLayout = null;
+  if (finished || (!days && !hours)) {
+    displayedLayout = (
+      <Text style={{ ...styles.timeStylesBig, ...style }}>
+        {`${mins === 0 || mins < 10 ? `0${mins}` : mins}m : ${
+          secs === 0 || secs < 10 ? `0${secs}` : secs}s`}
+      </Text>
+    );
+  } else if (hidden) {
+    displayedLayout = (
+      <Text style={{ ...styles.timeStylesText, ...style }}>
+        Keep going!
+      </Text>
+    );
   } else if (days) {
     displayedLayout = (
       <Text style={{ ...styles.timeStylesSmall, ...style }}>
@@ -23,13 +34,6 @@ const DayHourMinSec = (props) => {
         }m : ${secs === 0 || secs < 10 ? `0${secs}` : secs}s`}
       </Text>
     );
-  } else {
-    displayedLayout = (
-      <Text style={{ ...styles.timeStylesBig, ...style }}>
-        {`${mins === 0 || mins < 10 ? `0${mins}` : mins}m : ${
-          secs === 0 || secs < 10 ? `0${secs}` : secs}s`}
-      </Text>
-    );
   }
 
   return (
@@ -43,6 +47,7 @@ const styles = StyleSheet.create({
   container: {
     width: '120%',
     height: 65,
+    justifyContent: 'center',
     // backgroundColor: 'orange',
   },
   timeStylesBig: {
@@ -56,6 +61,11 @@ const styles = StyleSheet.create({
   timeStylesSmall: {
     fontSize: 38,
     fontFamily: 'open-sans-bold',
+  },
+  timeStylesText: {
+    fontSize: 38,
+    fontFamily: 'open-sans-bold',
+    textDecorationLine: 'underline',
   },
 });
 
