@@ -11,6 +11,17 @@ export default {
   lightPurple: '#f3ccff',
   lightestPurple: '#fbeeff',
 
+  darkestBloodRed: '#450f0d',
+  darkBloodRed: '#740a06',
+  bloodRed: '#9b0d08',
+  lightBloodRed: '#d5120b',
+
+  darkestGrey: '#161515',
+  darkGrey: '#1F1E1E',
+  grey: '#2a2828',
+  lightGrey: '#343232',
+  lightestGrey: '#494646',
+
   primary: '#c717fc',
   accent: '#ff8b3d',
 };

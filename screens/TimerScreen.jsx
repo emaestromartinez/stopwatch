@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  Switch,
 } from 'react-native';
 import moment from 'moment';
 
@@ -28,14 +29,26 @@ const TimerScreen = (props) => {
   // Timer inputs things;
   const [secondsInput, setSecondsInput] = useState('');
   const [minutesInput, setMinutesInput] = useState('');
+  const [isTimerHidden, setIsTimerHidden] = useState(false);
 
+
+  const checkForZeroString = (input) => {
+    if (input === '0'
+    || input === '00'
+    || input === '000'
+    || input === '0000') return true;
+    return false;
+  };
   const onChangeSecondsHandler = (inputText) => {
-    if (inputText === '0') setSecondsInput('');
+    if (checkForZeroString(inputText)) setSecondsInput('');
     else setSecondsInput(inputText.replace(/[^0-9]/g, ''));
   };
   const onChangeMinutesHandler = (inputText) => {
-    if (inputText === '0') setSecondsInput('');
+    if (checkForZeroString(inputText)) setSecondsInput('');
     else setMinutesInput(inputText.replace(/[^0-9]/g, ''));
+  };
+  const hiddenTimerSwitchHandler = () => {
+
   };
 
 
@@ -51,7 +64,7 @@ const TimerScreen = (props) => {
     eventDate = moment.duration().add({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   }
 
-  const startInterval = (secondsAtA) => {
+  const startInterval = () => {
     const interval = setInterval(() => {
       if (!eventDate || eventDate <= 0) {
         clearInterval(interval);
@@ -91,7 +104,6 @@ const TimerScreen = (props) => {
 
   const startTimerHandler = useCallback(() => {
     // Assert that proper values are inserted;
-
     if (!minutesInput) console.log('minutes are empty');
     if (!secondsInput) console.log('seconds are empty');
 
@@ -148,7 +160,7 @@ const TimerScreen = (props) => {
   }, [dispatch]);
 
 
-  // Timer layout;
+  // TIMER LAYOUT;
 
 
   return (
@@ -159,6 +171,7 @@ const TimerScreen = (props) => {
       }}
     >
       <View style={styles.screen}>
+
         <View style={styles.inputsContainer}>
           <View style={styles.inputContainer}>
             <Input
@@ -184,8 +197,21 @@ const TimerScreen = (props) => {
           </View>
         </View>
 
+        <View style={styles.hideTimerContainer}>
+          <Text style={styles.hideTimerText}>
+            Quepasooo
+          </Text>
+        </View>
+
         <View style={styles.timerContainer}>
-          <DayHourMinSec style={styles.timeStyles} days={days} hours={hours} mins={mins} secs={secs} />
+          <DayHourMinSec
+            style={styles.timeStyles}
+            days={days}
+            hours={hours}
+            mins={mins}
+            secs={secs}
+            hidden={isTimerHidden}
+          />
           <StopStartPauseButtons
             isTimerRunning={isTimerRunning}
             isTimerPaused={isTimerPaused}
@@ -196,7 +222,6 @@ const TimerScreen = (props) => {
             resumeTimerHandler={resumeTimerHandler}
             pauseTimerHandler={pauseTimerHandler}
           />
-
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -205,7 +230,7 @@ const TimerScreen = (props) => {
 };
 TimerScreen.navigationOptions = (navData) => ({
   headerTitle: 'Stop watch',
-  headerLeft: () => (
+  headerRight: () => (
     <HeaderButtons HeaderButtonComponent={HeaderButton}>
       <Item
         title="Menu"
@@ -224,6 +249,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginVertical: 35,
   },
+  // Input styles
   inputsContainer: {
     flexDirection: 'row',
     width: '65%',
@@ -232,27 +258,40 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     marginBottom: 45,
   },
+  inputText: {
+    fontSize: 20,
+  },
+
+  // Hide timer styles
+  hideTimerContainer: {
+    width: '40%',
+    marginVertical: 15,
+    borderWidth: 4,
+    borderColor: 'black',
+    borderRadius: 10,
+  },
+  hideTimerText: {
+    fontSize: 35,
+  },
+
+  // Input styles
   inputContainer: {
     // flexDirection: 'row',
     alignItems: 'center',
   },
-  inputText: {
-    fontSize: 20,
-  },
   timerInput: {
     height: 60,
     width: 95,
-    backgroundColor: 'lightgreen',
+    // backgroundColor: 'lightgreen',
     fontSize: 25,
     textAlign: 'center',
   },
+  // Timer styles
   timerContainer: {
     height: '60%',
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
-
-
 });
 
 export default TimerScreen;

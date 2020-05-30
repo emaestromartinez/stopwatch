@@ -7,6 +7,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 // import { Ionicons } from '@expo/vector-icons';
 // import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 
+import { createDrawerNavigator } from 'react-navigation-drawer';
 import Colors from '../constants/colors';
 import TimerScreen from '../screens/TimerScreen';
 
@@ -27,7 +28,7 @@ const defaultStackNavOptions = {
   headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
 };
 
-const MainNavigator = createStackNavigator(
+const TimerNavigator = createStackNavigator(
   {
     FirstScreen: {
       screen: TimerScreen,
@@ -37,6 +38,23 @@ const MainNavigator = createStackNavigator(
     defaultNavigationOptions: defaultStackNavOptions,
   },
 );
+
+const MainNavigator = createDrawerNavigator({
+  FavMeals: { screen: TimerNavigator,
+    navigationOptions: {
+      drawerLabel: 'SwissTimer',
+    } },
+}, {
+  drawerPosition: 'right',
+  contentOptions: {
+    activeTintColor: Colors.accent,
+    labelStyle: {
+      fontWeight: 'normal',
+      fontFamily: 'open-sans',
+      fontSize: 24,
+    },
+  },
+});
 
 
 export default createAppContainer(MainNavigator);

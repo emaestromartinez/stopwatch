@@ -2,10 +2,12 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
 const DayHourMinSec = (props) => {
-  const { style, days, hours, mins, secs } = props;
+  const { style, days, hours, mins, secs, hidden } = props;
 
   let displayedLayout;
-  if (days) {
+  if (hidden) {
+    displayedLayout = null;
+  } else if (days) {
     displayedLayout = (
       <Text style={{ ...styles.timeStylesSmall, ...style }}>
         {`${days}d : ${hours}h : ${
@@ -39,7 +41,9 @@ const DayHourMinSec = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: '90%',
+    width: '120%',
+    height: 65,
+    // backgroundColor: 'orange',
   },
   timeStylesBig: {
     fontSize: 45,
