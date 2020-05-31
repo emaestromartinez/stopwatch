@@ -4,24 +4,26 @@ import DefaultText from './DefaultText';
 
 import useTheme from '../../constants/themeHooks';
 
+const { colors } = useTheme();
+
 const IconTextButton = (props) => {
   const { style,
     children,
     onPress,
-    color,
     disabled,
     text,
   } = props;
-  const { colors } = useTheme();
+  let { color } = props;
 
+  if (!color) color = colors.buttonBGPrimary;
   return (
     <TouchableOpacity disabled={disabled} onPress={onPress}>
       <View style={!disabled
-        ? { backgroundColor: color || colors.buttonBGPrimary, ...styles.button, ...style }
-        : { backgroundColor: color || colors.buttonBGPrimary, ...styles.disabledButton, ...style }}
+        ? { ...styles.button, backgroundColor: color, ...style }
+        : { ...styles.disabledButton, backgroundColor: color, ...style }}
       >
         {children}
-        <DefaultText style={{ color: colors.buttonTextPrimary, ...styles.buttonText }}>{text}</DefaultText>
+        <DefaultText style={styles.buttonText}>{text}</DefaultText>
       </View>
     </TouchableOpacity>
   );
@@ -34,6 +36,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 25,
     alignItems: 'center',
+    backgroundColor: colors.buttonBGPrimary,
   },
   disabledButton: {
     flexDirection: 'column',
@@ -42,10 +45,12 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     alignItems: 'center',
     opacity: 0.7,
+    backgroundColor: colors.buttonBGPrimary,
   },
   buttonText: {
     fontSize: 16,
     fontFamily: 'open-sans-bold',
+    color: colors.buttonTextPrimary,
   },
 });
 

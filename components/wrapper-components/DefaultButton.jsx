@@ -4,10 +4,9 @@ import BodyText from './DefaultText';
 
 import useTheme from '../../constants/themeHooks';
 
+const { colors } = useTheme();
 
 const DefaultButton = (props) => {
-  const { Colors } = useTheme();
-
   const { style,
     children,
     onPress,
@@ -17,10 +16,10 @@ const DefaultButton = (props) => {
   return (
     <TouchableOpacity disabled={disabled} onPress={onPress}>
       <View style={!disabled
-        ? { backgroundColor: color || Colors.buttonBGPrimary, ...styles.button, ...style }
-        : { backgroundColor: color || Colors.buttonBGPrimary, ...styles.disabledButton, ...style }}
+        ? { backgroundColor: color, ...styles.button, ...style }
+        : { backgroundColor: color, ...styles.disabledButton, ...style }}
       >
-        <BodyText style={{ color: Colors.buttonTextPrimary, ...styles.buttonText }}>{children}</BodyText>
+        <BodyText style={styles.buttonText}>{children}</BodyText>
       </View>
     </TouchableOpacity>
   );
@@ -32,6 +31,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 25,
     alignItems: 'center',
+    backgroundColor: colors.buttonBGPrimary,
   },
   disabledButton: {
     paddingVertical: 8,
@@ -39,10 +39,12 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     alignItems: 'center',
     opacity: 0.5,
+    backgroundColor: colors.buttonBGPrimary,
   },
   buttonText: {
     fontSize: 16,
     fontFamily: 'open-sans-bold',
+    color: colors.buttonTextPrimary,
   },
 });
 

@@ -14,12 +14,12 @@ import useTheme from '../constants/themeHooks';
 
 import TimerScreen from '../screens/TimerScreen';
 
-const { Colors } = useTheme();
+const { colors } = useTheme();
 
 const defaultStackNavOptions = {
   headerStyle: {
-    // backgroundColor: Colors.headerBGPrimary,
-    backgroundColor: 'orange',
+    backgroundColor: colors.headerBGPrimary,
+    // backgroundColor: 'orange',
   },
   headerTitleStyle: {
     fontFamily: 'open-sans-bold',
@@ -30,8 +30,7 @@ const defaultStackNavOptions = {
   headerBackTitleStyle: {
     fontFamily: 'open-sans',
   },
-  headerTintColor: 'white',
-  // headerTintColor: Colors.headerTextPrimary,
+  headerTintColor: colors.headerTextPrimary,
 };
 
 const TimerNavigator = createStackNavigator(

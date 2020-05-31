@@ -33,17 +33,17 @@ export const colors = {
   buttonPrimaryBg: palette.palette02,
   headingText: palette.palette01,
 
-  headerBGPrimary: palette.darkGrey,
-  headerBGsecondary: palette.purple,
-  headerTextPrimary: palette.white,
-  headerTextsecondary: palette.white,
+  headerBGPrimary: palette.darkestGrey,
+  // headerBGsecondary: palette.purple,
+  headerTextPrimary: palette.buildTheGiantOrange,
+  // headerTextsecondary: palette.lightestGrey,
 
-  buttonBGPrimary: palette.darkGrey,
-  buttonBGsecondary: palette.lightPurple,
+  buttonBGPrimary: palette.darkestGrey,
+  // buttonBGsecondary: palette.lightPurple,
   buttonTextPrimary: palette.buildTheGiantOrange,
-  buttonTextsecondary: palette.white,
+  // buttonTextsecondary: palette.buildTheGiantOrange,
 
-  screenBackground: palette.lightGrey,
+  screenBackground: palette.darkGrey,
 
   accent: '#ff8b3d',
 };
