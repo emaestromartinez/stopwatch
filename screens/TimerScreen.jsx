@@ -161,8 +161,8 @@ const TimerScreen = () => {
     dispatch(pauseTimer(pausedTimer));
   }, [dispatch]);
 
-  let hideShowTimerText = 'Hide text!';
-  if (isTimerHidden) hideShowTimerText = 'Show text!';
+  let hideShowTimerText = 'Hide timer!';
+  if (isTimerHidden) hideShowTimerText = 'Show timer!';
 
   // TIMER LAYOUT;
   return (

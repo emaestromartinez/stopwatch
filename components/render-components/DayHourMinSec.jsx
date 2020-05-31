@@ -4,14 +4,39 @@ import { StyleSheet, View, Text } from 'react-native';
 const DayHourMinSec = (props) => {
   const { style, days, hours, mins, secs, hidden, finished } = props;
 
+  const minSecLayout = (
+    <Text style={{ ...styles.timeStylesBig, ...style }}>
+      {`${mins === 0 || mins < 10 ? `0${mins}` : mins}m : ${
+        secs === 0 || secs < 10 ? `0${secs}` : secs}s`}
+    </Text>
+  );
+  const hourMinSecLayout = (
+    <Text style={{ ...styles.timeStylesSmall, ...style }}>
+      {`${hours}h : ${
+        mins === 0 || mins < 10 ? `0${mins}` : mins
+      }m : ${secs === 0 || secs < 10 ? `0${secs}` : secs}s`}
+    </Text>
+  );
+  const dayHourMinSecLayout = (
+    <Text style={{ ...styles.timeStylesSmall, ...style }}>
+      {`${days}d : ${hours}h : ${
+        mins === 0 || mins < 10 ? `0${mins}` : mins
+      }m : ${secs === 0 || secs < 10 ? `0${secs}` : secs}s`}
+    </Text>
+  );
+
+
   let displayedLayout;
-  if (finished || (!days && !hours)) {
-    displayedLayout = (
-      <Text style={{ ...styles.timeStylesBig, ...style }}>
-        {`${mins === 0 || mins < 10 ? `0${mins}` : mins}m : ${
-          secs === 0 || secs < 10 ? `0${secs}` : secs}s`}
-      </Text>
-    );
+  if (finished) {
+    if (hidden) {
+      displayedLayout = (
+        <Text style={{ ...styles.timeStylesText, ...style }}>
+          You did it!
+        </Text>
+      );
+    } else {
+      displayedLayout = minSecLayout;
+    }
   } else if (hidden) {
     displayedLayout = (
       <Text style={{ ...styles.timeStylesText, ...style }}>
@@ -19,21 +44,11 @@ const DayHourMinSec = (props) => {
       </Text>
     );
   } else if (days) {
-    displayedLayout = (
-      <Text style={{ ...styles.timeStylesSmall, ...style }}>
-        {`${days}d : ${hours}h : ${
-          mins === 0 || mins < 10 ? `0${mins}` : mins
-        }m : ${secs === 0 || secs < 10 ? `0${secs}` : secs}s`}
-      </Text>
-    );
+    displayedLayout = dayHourMinSecLayout;
   } else if (hours) {
-    displayedLayout = (
-      <Text style={{ ...styles.timeStylesMedium, ...style }}>
-        {`${hours}h : ${
-          mins === 0 || mins < 10 ? `0${mins}` : mins
-        }m : ${secs === 0 || secs < 10 ? `0${secs}` : secs}s`}
-      </Text>
-    );
+    displayedLayout = hourMinSecLayout;
+  } else {
+    displayedLayout = minSecLayout;
   }
 
   return (
