@@ -22,11 +22,14 @@ import HeaderButton from '../components/wrapper-components/HeaderButton';
 import DayHourMinSec from '../components/render-components/DayHourMinSec';
 import StopStartPauseButtons from '../components/render-components/StopStartPauseButtons';
 import DefaultText from '../components/wrapper-components/DefaultText';
+import { colors } from '../constants/colors';
+import useTheme from '../constants/themeHooks';
 
 
 const TimerScreen = () => {
   // const TimerScreen = (props) => {
   // const { navigation } = props;
+  const { colors } = useTheme();
 
   // Timer inputs things;
   const [secondsInput, setSecondsInput] = useState('');
@@ -172,7 +175,7 @@ const TimerScreen = () => {
         Keyboard.dismiss();
       }}
     >
-      <View style={styles.screen}>
+      <View style={{ ...styles.screen, backgroundColor: colors.screenBackground }}>
 
         <View style={styles.inputsContainer}>
           <View style={styles.inputContainer}>

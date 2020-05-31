@@ -7,6 +7,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import IconTextButton from '../wrapper-components/IconTextButton';
 
+import useTheme from '../../constants/themeHooks';
 
 const StopStartPauseButtons = (props) => {
   const {
@@ -22,10 +23,12 @@ const StopStartPauseButtons = (props) => {
     pauseTimerHandler,
   } = props;
 
+  const { colors } = useTheme();
+  const iconColor = colors.buttonTextPrimary;
 
   const startResumeButton = isTimerPaused ? (
     <IconTextButton onPress={resumeTimerHandler} style={styles.button} text="Resume">
-      <Ionicons name="md-play" size={24} color="white" />
+      <Ionicons name="md-play" size={24} color={iconColor} />
     </IconTextButton>
   ) : (
     <IconTextButton
@@ -34,7 +37,7 @@ const StopStartPauseButtons = (props) => {
       style={styles.button}
       text="Start"
     >
-      <Ionicons name="md-play" size={24} color="white" />
+      <Ionicons name="md-play" size={24} color={iconColor} />
     </IconTextButton>
   );
 
@@ -46,7 +49,7 @@ const StopStartPauseButtons = (props) => {
         style={styles.button}
         text="Stop"
       >
-        <Ionicons name="ios-square" size={24} color="white" />
+        <Ionicons name="ios-square" size={24} color={iconColor} />
       </IconTextButton>
       {startResumeButton}
       <IconTextButton
@@ -55,7 +58,7 @@ const StopStartPauseButtons = (props) => {
         style={styles.button}
         text="Pause"
       >
-        <Ionicons name="md-pause" size={24} color="white" />
+        <Ionicons name="md-pause" size={24} color={iconColor} />
       </IconTextButton>
     </View>
   );

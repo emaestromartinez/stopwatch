@@ -1,6 +1,6 @@
 import { createAppContainer } from 'react-navigation';
 // import React from 'react';
-import { Platform } from 'react-native';
+
 import { createStackNavigator } from 'react-navigation-stack';
 // import { createBottomTabNavigator } from 'react-navigation-tabs';
 // import { createDrawerNavigator } from 'react-navigation-drawer';
@@ -8,13 +8,18 @@ import { createStackNavigator } from 'react-navigation-stack';
 // import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 
 import { createDrawerNavigator } from 'react-navigation-drawer';
-import Colors from '../constants/colors';
+
+
+import useTheme from '../constants/themeHooks';
+
 import TimerScreen from '../screens/TimerScreen';
 
+const { Colors } = useTheme();
 
 const defaultStackNavOptions = {
   headerStyle: {
-    backgroundColor: Platform.OS === 'android' ? Colors.primary : '',
+    // backgroundColor: Colors.headerBGPrimary,
+    backgroundColor: 'orange',
   },
   headerTitleStyle: {
     fontFamily: 'open-sans-bold',
@@ -25,7 +30,8 @@ const defaultStackNavOptions = {
   headerBackTitleStyle: {
     fontFamily: 'open-sans',
   },
-  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
+  headerTintColor: 'white',
+  // headerTintColor: Colors.headerTextPrimary,
 };
 
 const TimerNavigator = createStackNavigator(
@@ -47,7 +53,7 @@ const MainNavigator = createDrawerNavigator({
 }, {
   drawerPosition: 'right',
   contentOptions: {
-    activeTintColor: Colors.accent,
+    activeTintColor: 'red',
     labelStyle: {
       fontWeight: 'normal',
       fontFamily: 'open-sans',
