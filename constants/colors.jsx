@@ -20,7 +20,7 @@ export const palette = {
   darkGrey: '#2a2828',
   grey: '#686464',
   lightGrey: '#a8a4a4',
-  lightestGrey: '#e6e5e5',
+  lightestGrey: '#dad8d8',
 
   buildTheGiantOrange: '#ea9c00',
 
@@ -34,16 +34,17 @@ export const colors = {
   headingText: palette.palette01,
 
   headerBGPrimary: palette.darkestGrey,
-  // headerBGsecondary: palette.purple,
   headerTextPrimary: palette.buildTheGiantOrange,
-  // headerTextsecondary: palette.lightestGrey,
 
-  buttonBGPrimary: palette.darkestGrey,
-  // buttonBGsecondary: palette.lightPurple,
+  buttonBorderPrimary: palette.buildTheGiantOrange,
   buttonTextPrimary: palette.buildTheGiantOrange,
-  // buttonTextsecondary: palette.buildTheGiantOrange,
 
+  buttonBackground: palette.grey,
+  inputBackground: palette.grey,
   screenBackground: palette.darkGrey,
+
+  textPrimary: palette.lightestGrey,
+
 
   accent: '#ff8b3d',
 };

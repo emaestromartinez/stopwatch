@@ -31,15 +31,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 25,
     alignItems: 'center',
-    backgroundColor: colors.buttonBGPrimary,
+    backgroundColor: colors.buttonBackground,
   },
   disabledButton: {
     paddingVertical: 8,
     paddingHorizontal: 15,
     borderRadius: 25,
     alignItems: 'center',
-    opacity: 0.5,
-    backgroundColor: colors.buttonBGPrimary,
+    opacity: 0,
+    backgroundColor: colors.buttonBackground,
   },
   buttonText: {
     fontSize: 16,

@@ -1,28 +1,29 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import DefaultText from '../wrapper-components/DefaultText';
 
 const DayHourMinSec = (props) => {
   const { style, days, hours, mins, secs, hidden, finished } = props;
 
   const minSecLayout = (
-    <Text style={{ ...styles.timeStylesBig, ...style }}>
+    <DefaultText style={{ ...styles.timeStylesBig, ...style }}>
       {`${mins === 0 || mins < 10 ? `0${mins}` : mins}m : ${
         secs === 0 || secs < 10 ? `0${secs}` : secs}s`}
-    </Text>
+    </DefaultText>
   );
   const hourMinSecLayout = (
-    <Text style={{ ...styles.timeStylesSmall, ...style }}>
+    <DefaultText style={{ ...styles.timeStylesSmall, ...style }}>
       {`${hours}h : ${
         mins === 0 || mins < 10 ? `0${mins}` : mins
       }m : ${secs === 0 || secs < 10 ? `0${secs}` : secs}s`}
-    </Text>
+    </DefaultText>
   );
   const dayHourMinSecLayout = (
-    <Text style={{ ...styles.timeStylesSmall, ...style }}>
+    <DefaultText style={{ ...styles.timeStylesSmall, ...style }}>
       {`${days}d : ${hours}h : ${
         mins === 0 || mins < 10 ? `0${mins}` : mins
       }m : ${secs === 0 || secs < 10 ? `0${secs}` : secs}s`}
-    </Text>
+    </DefaultText>
   );
 
 
@@ -30,18 +31,18 @@ const DayHourMinSec = (props) => {
   if (finished) {
     if (hidden) {
       displayedLayout = (
-        <Text style={{ ...styles.timeStylesText, ...style }}>
+        <DefaultText style={{ ...styles.timeStylesText, ...style }}>
           You did it!
-        </Text>
+        </DefaultText>
       );
     } else {
       displayedLayout = minSecLayout;
     }
   } else if (hidden) {
-    displayedLayout = (
-      <Text style={{ ...styles.timeStylesText, ...style }}>
+    DefaultText = (
+      <DefaultText style={{ ...styles.timeStylesText, ...style }}>
         Keep going!
-      </Text>
+      </DefaultText>
     );
   } else if (days) {
     displayedLayout = dayHourMinSecLayout;

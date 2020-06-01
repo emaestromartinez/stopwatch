@@ -15,7 +15,7 @@ const IconTextButton = (props) => {
   } = props;
   let { color } = props;
 
-  if (!color) color = colors.buttonBGPrimary;
+  if (!color) color = colors.buttonBackground;
   return (
     <TouchableOpacity disabled={disabled} onPress={onPress}>
       <View style={!disabled
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 25,
     alignItems: 'center',
-    backgroundColor: colors.buttonBGPrimary,
+    backgroundColor: colors.buttonBackground,
   },
   disabledButton: {
     flexDirection: 'column',
@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 25,
     alignItems: 'center',
-    opacity: 0.7,
-    backgroundColor: colors.buttonBGPrimary,
+    opacity: 0.3,
+    backgroundColor: colors.buttonBackground,
   },
   buttonText: {
     fontSize: 16,

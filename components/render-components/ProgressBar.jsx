@@ -9,7 +9,7 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../wrapper-components/HeaderButton';
 
 
-const ComponentTemplate = (props) => {
+const ProgressBar = (props) => {
   const { navigation } = props;
   return (
     <View>
@@ -18,7 +18,7 @@ const ComponentTemplate = (props) => {
   );
 };
 
-ComponentTemplate.navigationOptions = (navData) => {
+ProgressBar.navigationOptions = (navData) => {
   const navParam = navData.navigation.getParam('navParam');
   const navFunctionAsParam = navData.navigation.getParam('navFunctionAsParam');
 
@@ -38,4 +38,4 @@ ComponentTemplate.navigationOptions = (navData) => {
 
 const styles = StyleSheet.create({});
 
-export default ComponentTemplate;
+export default ProgressBar;

@@ -182,12 +182,13 @@ const TimerScreen = () => {
             <Input
               style={styles.timerInput}
               value={minutesInput}
+
               onChangeText={(value) => onChangeMinutesHandler(value)}
               keyboardType="numeric"
               blurOnSubmit
               maxLength={4}
             />
-            <Text style={styles.inputText}> Minutes </Text>
+            <DefaultText style={styles.inputText}> Minutes </DefaultText>
           </View>
           <View style={styles.inputContainer}>
             <Input
@@ -198,7 +199,7 @@ const TimerScreen = () => {
               blurOnSubmit
               maxLength={4}
             />
-            <Text style={styles.inputText}>Seconds</Text>
+            <DefaultText style={styles.inputText}>Seconds</DefaultText>
           </View>
         </View>
 
@@ -268,7 +269,6 @@ const styles = StyleSheet.create({
     height: '40%',
     alignItems: 'center',
     justifyContent: 'space-around',
-    // marginTop: 45,
   },
   inputText: {
     fontSize: 20,
@@ -280,22 +280,25 @@ const styles = StyleSheet.create({
   },
   hideTimerButton: {
     borderWidth: 2,
-    borderColor: 'black',
+    borderColor: colors.buttonBorderPrimary,
     borderRadius: 150,
   },
   hideTimerText: {
     fontSize: 25,
+    color: colors.buttonTextPrimary,
   },
 
   // Input styles
   inputContainer: {
-    // flexDirection: 'row',
     alignItems: 'center',
   },
   timerInput: {
+    borderBottomColor: 'red',
+    borderBottomWidth: 0,
+    color: colors.textPrimary,
+    backgroundColor: colors.inputBackground,
     height: 60,
     width: 95,
-    // backgroundColor: 'lightgreen',
     fontSize: 25,
     textAlign: 'center',
   },
