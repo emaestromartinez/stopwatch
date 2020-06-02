@@ -14,8 +14,8 @@ import moment from 'moment';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
 
+import * as Progress from 'react-native-progress';
 import { pauseTimer, updateTimer } from '../store/actions/timerAction';
-
 
 import Input from '../components/wrapper-components/Input';
 import HeaderButton from '../components/wrapper-components/HeaderButton';
@@ -63,8 +63,17 @@ const TimerScreen = () => {
   const dispatch = useDispatch();
 
   let { eventDate } = currentTimer;
-  const { days, hours, mins, secs, isTimerRunning, isTimerPaused } = currentTimer;
+  const { finalEventDate, days, hours, mins, secs, isTimerRunning, isTimerPaused } = currentTimer;
   const isTimerFinished = (!eventDate || eventDate <= 0);
+
+  let timerProgress = 0;
+
+  if (finalEventDate && eventDate) {
+    timerProgress = (1 - (eventDate - 0) / (finalEventDate - 0));
+    console.log(`% is ${100 - ((eventDate - 0) / (finalEventDate - 0)) * 100}`);
+  }
+  console.log('--------------------');
+
 
   if (eventDate === undefined) {
     eventDate = moment.duration().add({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -101,7 +110,7 @@ const TimerScreen = () => {
   };
 
   useEffect(() => {
-    console.log('howmanytimesamIrunningstartintervalioo');
+    // console.log('howmanytimesamIrunningstartintervalioo');
     const interval = startInterval();
     return () => {
       clearInterval(interval);
@@ -116,15 +125,16 @@ const TimerScreen = () => {
       ]);
       return;
     }
-    // setIsTimerHidden(false);
 
     const newEventDate = moment
       .duration()
       .add({ days: 0, hours: 0, minutes: minutesInput, seconds: secondsInput });
+
     if (!newEventDate) {
       return;
     }
     const initialStartedTimer = {
+      finalEventDate: newEventDate.clone(),
       eventDate: newEventDate,
       days: newEventDate.days(),
       hours: newEventDate.hours(),
@@ -133,8 +143,10 @@ const TimerScreen = () => {
       isTimerRunning: true,
       isTimerPaused: false,
     };
+
     dispatch(updateTimer(initialStartedTimer));
   }, [dispatch, secondsInput, minutesInput]);
+
 
   const stopTimerHandler = useCallback(() => {
     setIsTimerHidden(false);
@@ -203,6 +215,7 @@ const TimerScreen = () => {
           </View>
         </View>
 
+
         <View style={styles.hideTimerContainer}>
           <TouchableOpacity onPress={hiddenTimerSwitchHandler}>
             <View style={styles.hideTimerButton}>
@@ -212,6 +225,12 @@ const TimerScreen = () => {
             </View>
           </TouchableOpacity>
         </View>
+
+        <Progress.Bar
+          progress={timerProgress}
+          width={200}
+          color={colors.progressBarColor}
+        />
 
         <View style={styles.timerContainer}>
           <DayHourMinSec
@@ -273,22 +292,6 @@ const styles = StyleSheet.create({
   inputText: {
     fontSize: 20,
   },
-
-  // Hide timer styles
-  hideTimerContainer: {
-    width: '40%',
-  },
-  hideTimerButton: {
-    borderWidth: 2,
-    borderColor: colors.buttonBorderPrimary,
-    borderRadius: 150,
-  },
-  hideTimerText: {
-    fontSize: 25,
-    color: colors.buttonTextPrimary,
-  },
-
-  // Input styles
   inputContainer: {
     alignItems: 'center',
   },
@@ -302,9 +305,26 @@ const styles = StyleSheet.create({
     fontSize: 25,
     textAlign: 'center',
   },
+
+  // Hide timer styles
+  hideTimerContainer: {
+    width: '40%',
+    height: '10%',
+  },
+  hideTimerButton: {
+    borderWidth: 2,
+    borderColor: colors.buttonBorderPrimary,
+    borderRadius: 150,
+  },
+  hideTimerText: {
+    fontSize: 25,
+    color: colors.buttonTextPrimary,
+  },
+
+
   // Timer styles
   timerContainer: {
-    height: '60%',
+    height: '50%',
     alignItems: 'center',
     justifyContent: 'flex-start',
   },

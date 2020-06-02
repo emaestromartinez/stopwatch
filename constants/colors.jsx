@@ -24,6 +24,7 @@ export const palette = {
 
   buildTheGiantOrange: '#ea9c00',
 
+
   black: '#000000',
   white: '#FFFFFF',
 };
@@ -36,12 +37,17 @@ export const colors = {
   headerBGPrimary: palette.darkestGrey,
   headerTextPrimary: palette.buildTheGiantOrange,
 
+  buttonBackground: palette.grey,
   buttonBorderPrimary: palette.buildTheGiantOrange,
   buttonTextPrimary: palette.buildTheGiantOrange,
 
-  buttonBackground: palette.grey,
   inputBackground: palette.grey,
+
   screenBackground: palette.darkGrey,
+
+  progressBarColor: palette.buildTheGiantOrange,
+  progressPieColor: palette.buildTheGiantOrange,
+  progressCircleColor: palette.buildTheGiantOrange,
 
   textPrimary: palette.lightestGrey,
 

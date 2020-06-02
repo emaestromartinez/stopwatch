@@ -8,6 +8,7 @@ import {
 } from '../actions/timerAction';
 
 const initialState = {
+  finalEventDate: undefined,
   eventDate: undefined,
   days: 0,
   hours: 0,
