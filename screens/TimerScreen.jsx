@@ -14,14 +14,15 @@ import moment from 'moment';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
 
-import * as Progress from 'react-native-progress';
 import { pauseTimer, updateTimer } from '../store/actions/timerAction';
 
 import Input from '../components/wrapper-components/Input';
 import HeaderButton from '../components/wrapper-components/HeaderButton';
 import DayHourMinSec from '../components/render-components/DayHourMinSec';
 import StopStartPauseButtons from '../components/render-components/StopStartPauseButtons';
+import ProgressBar from '../components/render-components/ProgressBar';
 import DefaultText from '../components/wrapper-components/DefaultText';
+
 import useTheme from '../constants/themeHooks';
 
 
@@ -226,11 +227,9 @@ const TimerScreen = () => {
           </TouchableOpacity>
         </View>
 
-        <Progress.Bar
-          progress={timerProgress}
-          width={200}
-          color={colors.progressBarColor}
-        />
+        <View style={styles.progressBarContainer}>
+          <ProgressBar timerProgress={timerProgress} />
+        </View>
 
         <View style={styles.timerContainer}>
           <DayHourMinSec
@@ -309,7 +308,10 @@ const styles = StyleSheet.create({
   // Hide timer styles
   hideTimerContainer: {
     width: '40%',
-    height: '10%',
+    // backgroundColor: 'red',
+    height: 40,
+    // height: '10%',
+    marginBottom: 8,
   },
   hideTimerButton: {
     borderWidth: 2,
@@ -321,6 +323,12 @@ const styles = StyleSheet.create({
     color: colors.buttonTextPrimary,
   },
 
+  // Progress bar
+  progressBarContainer: {
+    maxHeight: '5%',
+    justifyContent: 'center',
+    // backgroundColor: 'white',
+  },
 
   // Timer styles
   timerContainer: {

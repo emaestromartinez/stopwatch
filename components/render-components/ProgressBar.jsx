@@ -6,15 +6,22 @@ import {
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
+import * as Progress from 'react-native-progress';
+
 import HeaderButton from '../wrapper-components/HeaderButton';
 
+import useTheme from '../../constants/themeHooks';
+
+const { colors } = useTheme();
 
 const ProgressBar = (props) => {
-  const { navigation } = props;
+  const { navigation, timerProgress } = props;
   return (
-    <View>
-      <Text />
-    </View>
+    <Progress.Bar
+      progress={timerProgress}
+      width={200}
+      color={colors.progressBarColor}
+    />
   );
 };
 
