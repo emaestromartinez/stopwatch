@@ -39,7 +39,7 @@ const DayHourMinSec = (props) => {
       displayedLayout = minSecLayout;
     }
   } else if (hidden) {
-    DefaultText = (
+    displayedLayout = (
       <DefaultText style={{ ...styles.timeStylesText, ...style }}>
         Keep going!
       </DefaultText>
