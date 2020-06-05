@@ -71,9 +71,7 @@ const TimerScreen = () => {
 
   if (finalEventDate && eventDate) {
     timerProgress = (1 - (eventDate - 0) / (finalEventDate - 0));
-    console.log(`% is ${100 - ((eventDate - 0) / (finalEventDate - 0)) * 100}`);
   }
-  console.log('--------------------');
 
 
   if (eventDate === undefined) {

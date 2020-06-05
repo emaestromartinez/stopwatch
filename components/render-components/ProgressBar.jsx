@@ -8,41 +8,48 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import * as Progress from 'react-native-progress';
 
-import HeaderButton from '../wrapper-components/HeaderButton';
 
 import useTheme from '../../constants/themeHooks';
+import DefaultText from '../wrapper-components/DefaultText';
 
 const { colors } = useTheme();
 
 const ProgressBar = (props) => {
   const { navigation, timerProgress } = props;
+
+  const percentage = Math.round((timerProgress + 0.00001) * 100) / 100;
   return (
-    <Progress.Bar
-      progress={timerProgress}
-      width={200}
-      color={colors.progressBarColor}
-    />
+    <View style={styles.container}>
+
+      <View>
+        <Progress.Bar
+          progress={percentage}
+          width={200}
+          color={colors.progressBarColor}
+        />
+      </View>
+      <View>
+        <DefaultText style={styles.progressPercentage}>
+          {Math.round(percentage * 100)}
+          %
+        </DefaultText>
+      </View>
+    </View>
   );
 };
 
-ProgressBar.navigationOptions = (navData) => {
-  const navParam = navData.navigation.getParam('navParam');
-  const navFunctionAsParam = navData.navigation.getParam('navFunctionAsParam');
-
-  return {
-    headerTitle: navParam,
-    headerRight: () => (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="favorite"
-          iconName="ios-star"
-          onPress={navFunctionAsParam}
-        />
-      </HeaderButtons>
-    ),
-  };
-};
-
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    // flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 50,
+  },
+  progressPercentage: {
+    color: colors.progressBarColor,
+    paddingHorizontal: 10,
+    fontSize: 20,
+  },
+});
 
 export default ProgressBar;
