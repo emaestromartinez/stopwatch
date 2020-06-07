@@ -30,9 +30,6 @@ export const palette = {
 };
 
 export const colors = {
-  paragraphText: palette.palette01,
-  buttonPrimaryBg: palette.palette02,
-  headingText: palette.palette01,
 
   headerBGPrimary: palette.darkestGrey,
   headerTextPrimary: palette.buildTheGiantOrange,
@@ -40,6 +37,7 @@ export const colors = {
   buttonBackground: palette.grey,
   buttonBorderPrimary: palette.buildTheGiantOrange,
   buttonTextPrimary: palette.buildTheGiantOrange,
+  buttonDisabledOpacity: 0.3,
 
   inputBackground: palette.grey,
 
@@ -60,10 +58,15 @@ export const themedColors = {
   },
   light: {
     ...colors,
+    screenBackground: palette.lightestGrey,
+
+    buttonBackground: palette.darkestGrey,
+
+    textPrimary: palette.darkestGrey,
+
+    buttonDisabledOpacity: 0.7,
   },
   dark: {
     ...colors,
-    // buttonPrimaryBg: palette.palette01,
-    // paragraphText: palette.palette02,
   },
 };

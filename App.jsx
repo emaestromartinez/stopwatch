@@ -9,11 +9,13 @@ import { enableScreens } from 'react-native-screens';
 
 import TimerNavigator from './navigation/TimerNavigator';
 import timerReducer from './store/reducers/timerReducer';
+import themeReducer from './store/reducers/themeReducer';
 
 enableScreens();
 
 const rootReducer = combineReducers({
   timer: timerReducer,
+  theme: themeReducer,
 });
 
 const store = createStore(rootReducer);

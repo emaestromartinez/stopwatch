@@ -26,11 +26,13 @@ import DefaultText from '../components/wrapper-components/DefaultText';
 import useTheme from '../constants/themeHooks';
 
 
-const { colors } = useTheme();
-
 const TimerScreen = () => {
   // const TimerScreen = (props) => {
   // const { navigation } = props;
+
+  // Color theme
+  const themeStore = useSelector((state) => state.theme);
+  const { colors } = useTheme(themeStore.theme);
 
   // Timer inputs things;
   const [secondsInput, setSecondsInput] = useState('');
@@ -186,12 +188,14 @@ const TimerScreen = () => {
         Keyboard.dismiss();
       }}
     >
-      <View style={styles.screen}>
+      <View style={{ ...styles.screen, backgroundColor: colors.screenBackground }}>
 
         <View style={styles.inputsContainer}>
           <View style={styles.inputContainer}>
             <Input
-              style={styles.timerInput}
+              style={{ ...styles.timerInput,
+                color: colors.textPrimary,
+                backgroundColor: colors.inputBackground }}
               value={minutesInput}
 
               onChangeText={(value) => onChangeMinutesHandler(value)}
@@ -203,7 +207,9 @@ const TimerScreen = () => {
           </View>
           <View style={styles.inputContainer}>
             <Input
-              style={styles.timerInput}
+              style={{ ...styles.timerInput,
+                color: colors.textPrimary,
+                backgroundColor: colors.inputBackground }}
               value={secondsInput}
               onChangeText={(value) => onChangeSecondsHandler(value)}
               keyboardType="numeric"
@@ -217,8 +223,8 @@ const TimerScreen = () => {
 
         <View style={styles.hideTimerContainer}>
           <TouchableOpacity onPress={hiddenTimerSwitchHandler}>
-            <View style={styles.hideTimerButton}>
-              <DefaultText style={styles.hideTimerText} numberOfLines={1}>
+            <View style={{ ...styles.hideTimerButton, borderColor: colors.buttonBorderPrimary }}>
+              <DefaultText style={{ ...styles.hideTimerText, color: colors.buttonTextPrimary }} numberOfLines={1}>
                 {hideShowTimerText}
               </DefaultText>
             </View>
@@ -276,7 +282,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 35,
-    backgroundColor: colors.screenBackground,
   },
   // Input styles
   inputsContainer: {
@@ -295,8 +300,6 @@ const styles = StyleSheet.create({
   timerInput: {
     borderBottomColor: 'red',
     borderBottomWidth: 0,
-    color: colors.textPrimary,
-    backgroundColor: colors.inputBackground,
     height: 60,
     width: 95,
     fontSize: 25,
@@ -313,12 +316,10 @@ const styles = StyleSheet.create({
   },
   hideTimerButton: {
     borderWidth: 2,
-    borderColor: colors.buttonBorderPrimary,
     borderRadius: 150,
   },
   hideTimerText: {
     fontSize: 25,
-    color: colors.buttonTextPrimary,
   },
 
   // Progress bar

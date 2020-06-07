@@ -3,10 +3,13 @@ import { Platform } from 'react-native';
 import { HeaderButton } from 'react-navigation-header-buttons';
 import { Ionicons } from '@expo/vector-icons';
 
+import { useSelector } from 'react-redux';
 import useTheme from '../../constants/themeHooks';
 
 const CustomHeaderButton = (props) => {
-  const { colors } = useTheme();
+  // Color theme
+  const themeStore = useSelector((state) => state.theme);
+  const { colors } = useTheme(themeStore.theme);
 
   return (
     <HeaderButton

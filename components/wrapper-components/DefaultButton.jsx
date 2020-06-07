@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
 import BodyText from './DefaultText';
 
 import useTheme from '../../constants/themeHooks';
 
-const { colors } = useTheme();
 
 const DefaultButton = (props) => {
   const { style,
@@ -13,13 +13,18 @@ const DefaultButton = (props) => {
     color,
     disabled,
   } = props;
+
+  // Color theme
+  const themeStore = useSelector((state) => state.theme);
+  const { colors } = useTheme(themeStore.theme);
+
   return (
     <TouchableOpacity disabled={disabled} onPress={onPress}>
       <View style={!disabled
-        ? { backgroundColor: color, ...styles.button, ...style }
-        : { backgroundColor: color, ...styles.disabledButton, ...style }}
+        ? { backgroundColor: color || colors.buttonBackground, ...styles.button, ...style }
+        : { backgroundColor: color || colors.buttonBackground, ...styles.disabledButton, ...style }}
       >
-        <BodyText style={styles.buttonText}>{children}</BodyText>
+        <BodyText style={{ ...styles.buttonText, color: colors.buttonTextPrimary }}>{children}</BodyText>
       </View>
     </TouchableOpacity>
   );
@@ -31,7 +36,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 25,
     alignItems: 'center',
-    backgroundColor: colors.buttonBackground,
   },
   disabledButton: {
     paddingVertical: 8,
@@ -39,12 +43,10 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     alignItems: 'center',
     opacity: 0,
-    backgroundColor: colors.buttonBackground,
   },
   buttonText: {
     fontSize: 16,
     fontFamily: 'open-sans-bold',
-    color: colors.buttonTextPrimary,
   },
 });
 

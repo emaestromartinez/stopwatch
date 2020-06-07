@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
 import DefaultText from './DefaultText';
 
 import useTheme from '../../constants/themeHooks';
 
-const { colors } = useTheme();
 
 const IconTextButton = (props) => {
   const { style,
@@ -15,15 +15,19 @@ const IconTextButton = (props) => {
   } = props;
   let { color } = props;
 
+  // Color theme
+  const themeStore = useSelector((state) => state.theme);
+  const { colors } = useTheme(themeStore.theme);
+
   if (!color) color = colors.buttonBackground;
   return (
     <TouchableOpacity disabled={disabled} onPress={onPress}>
       <View style={!disabled
-        ? { ...styles.button, backgroundColor: color, ...style }
-        : { ...styles.disabledButton, backgroundColor: color, ...style }}
+        ? { ...styles.button, backgroundColor: color || colors.buttonBackground, ...style }
+        : { ...styles.disabledButton, backgroundColor: color || colors.buttonBackground, opacity: colors.buttonDisabledOpacity, ...style }}
       >
         {children}
-        <DefaultText style={styles.buttonText}>{text}</DefaultText>
+        <DefaultText style={{ ...styles.buttonText, color: colors.buttonTextPrimary }}>{text}</DefaultText>
       </View>
     </TouchableOpacity>
   );
@@ -36,7 +40,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 25,
     alignItems: 'center',
-    backgroundColor: colors.buttonBackground,
   },
   disabledButton: {
     flexDirection: 'column',
@@ -44,13 +47,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 25,
     alignItems: 'center',
-    opacity: 0.3,
-    backgroundColor: colors.buttonBackground,
   },
   buttonText: {
     fontSize: 16,
     fontFamily: 'open-sans-bold',
-    color: colors.buttonTextPrimary,
   },
 });
 

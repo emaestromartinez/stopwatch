@@ -1,8 +1,8 @@
+
+import { useSelector } from 'react-redux';
 import { themedColors } from './colors';
 
-const useTheme = () => {
-//   const theme = 'default';
-  const theme = 'light';
+const useTheme = (theme = 'default') => {
   const colors = theme ? themedColors[theme] : themedColors.default;
 
   return {

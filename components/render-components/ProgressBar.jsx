@@ -9,13 +9,17 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import * as Progress from 'react-native-progress';
 
 
+import { useSelector } from 'react-redux';
 import useTheme from '../../constants/themeHooks';
 import DefaultText from '../wrapper-components/DefaultText';
 
-const { colors } = useTheme();
 
 const ProgressBar = (props) => {
   const { navigation, timerProgress } = props;
+
+  // Color theme
+  const themeStore = useSelector((state) => state.theme);
+  const { colors } = useTheme(themeStore.theme);
 
   const percentage = Math.round((timerProgress + 0.00001) * 100) / 100;
   return (
@@ -29,7 +33,7 @@ const ProgressBar = (props) => {
         />
       </View>
       <View>
-        <DefaultText style={styles.progressPercentage}>
+        <DefaultText style={{ ...styles.progressPercentage, color: colors.progressBarColor }}>
           {Math.round(percentage * 100)}
           %
         </DefaultText>
@@ -46,7 +50,6 @@ const styles = StyleSheet.create({
     marginLeft: 50,
   },
   progressPercentage: {
-    color: colors.progressBarColor,
     paddingHorizontal: 10,
     fontSize: 20,
   },

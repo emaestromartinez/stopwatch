@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
 import IconTextButton from '../wrapper-components/IconTextButton';
 
 import useTheme from '../../constants/themeHooks';
@@ -23,7 +24,9 @@ const StopStartPauseButtons = (props) => {
     pauseTimerHandler,
   } = props;
 
-  const { colors } = useTheme();
+  // Color theme
+  const themeStore = useSelector((state) => state.theme);
+  const { colors } = useTheme(themeStore.theme);
   const iconColor = colors.buttonTextPrimary;
 
   const startResumeButton = isTimerPaused ? (
