@@ -1,25 +1,25 @@
-import { createAppContainer } from 'react-navigation';
-// import React from 'react';
+import React from 'react';
 
-import { createStackNavigator } from 'react-navigation-stack';
-// import { createBottomTabNavigator } from 'react-navigation-tabs';
-// import { createDrawerNavigator } from 'react-navigation-drawer';
-// import { Ionicons } from '@expo/vector-icons';
-// import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import {
+  createDrawerNavigator,
+  DrawerItemList,
+  DrawerItem,
+  DrawerContentScrollView,
+} from '@react-navigation/drawer';
 
-import { createDrawerNavigator } from 'react-navigation-drawer';
 
-
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { View } from 'react-native';
 import useTheme from '../constants/themeHooks';
 
-import TimerScreen from '../screens/TimerScreen';
+import TimerScreen, { screenOptions } from '../screens/TimerScreen';
 
 const { colors } = useTheme();
 
 const defaultStackNavOptions = {
   headerStyle: {
     backgroundColor: colors.headerBGPrimary,
-    // backgroundColor: 'orange',
   },
   headerTitleStyle: {
     fontFamily: 'open-sans-bold',
@@ -33,33 +33,41 @@ const defaultStackNavOptions = {
   headerTintColor: colors.headerTextPrimary,
 };
 
-const TimerNavigator = createStackNavigator(
-  {
-    FirstScreen: {
-      screen: TimerScreen,
-    },
-  },
-  {
-    defaultNavigationOptions: defaultStackNavOptions,
-  },
+const TimerStackNavigator = createStackNavigator();
+const MainDrawerNavigator = createDrawerNavigator();
+
+export const TimerNavigator = () => (
+  <TimerStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+    <TimerStackNavigator.Screen name="Timer" component={TimerScreen} options={screenOptions} />
+  </TimerStackNavigator.Navigator>
 );
 
-const MainNavigator = createDrawerNavigator({
-  FavMeals: { screen: TimerNavigator,
-    navigationOptions: {
-      drawerLabel: 'SwissTimer',
-    } },
-}, {
-  drawerPosition: 'right',
-  contentOptions: {
-    activeTintColor: 'red',
-    labelStyle: {
-      fontWeight: 'normal',
-      fontFamily: 'open-sans',
-      fontSize: 24,
-    },
-  },
-});
+export const MainNavigator = () => (
+
+  <MainDrawerNavigator.Navigator
+    drawerContent={(props) => (
+      <View style={{ flex: 1, paddingTop: 20, backgroundColor: 'lightgreen' }}>
+        <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }} />
+      </View>
+    )}
+    drawerContentOptions={{
+      // activeTintColor: 'red',
+      // labelStyle: {
+      //   fontWeight: 'normal',
+      //   fontFamily: 'open-sans',
+      //   fontSize: 24,
+      // },
+    }}
+    // drawerPosition="right"
+    initialRouteName="Timer"
+  >
+    <MainDrawerNavigator.Screen
+      name="Timer"
+      component={TimerNavigator}
+
+    />
+  </MainDrawerNavigator.Navigator>
+);
 
 
-export default createAppContainer(MainNavigator);
+export default 3;

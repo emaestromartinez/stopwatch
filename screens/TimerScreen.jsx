@@ -262,7 +262,7 @@ const TimerScreen = () => {
     // </KeyboardAvoidingView>
   );
 };
-TimerScreen.navigationOptions = (navData) => ({
+export const screenOptions = (navData) => ({
   headerTitle: 'Stop watch',
   headerRight: () => (
     <HeaderButtons HeaderButtonComponent={HeaderButton}>

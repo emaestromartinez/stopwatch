@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 
 import { enableScreens } from 'react-native-screens';
 
-import TimerNavigator from './navigation/TimerNavigator';
+import AppNavigator from './navigation/AppNavigator';
 import timerReducer from './store/reducers/timerReducer';
 import themeReducer from './store/reducers/themeReducer';
 
@@ -44,7 +44,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <TimerNavigator />
+      <AppNavigator />
     </Provider>
   );
 }
