@@ -69,13 +69,15 @@ const TimerScreen = () => {
   const dispatch = useDispatch();
 
   let { eventDate } = currentTimer;
-  const { finalEventDate, days, hours, mins, secs, isTimerRunning, isTimerPaused } = currentTimer;
+  const { finalEventDate, days, hours, mins, secs, isTimerRunning, isTimerPaused, isTimerStopped } = currentTimer;
   const isTimerFinished = (!eventDate || eventDate <= 0);
 
   let timerProgress = 0;
-
-  if (finalEventDate && eventDate) {
+  if (isTimerStopped) {
+    timerProgress = 0;
+  } else if (finalEventDate && eventDate) {
     timerProgress = (1 - (eventDate - 0) / (finalEventDate - 0));
+    console.log(timerProgress);
   }
 
 
@@ -95,6 +97,7 @@ const TimerScreen = () => {
           secs: 0,
           isTimerRunning: false,
           isTimerPaused: false,
+          isTimerStopped: false,
         };
         dispatch(updateTimer(newTimer));
       } else if (!isTimerPaused) {
@@ -146,6 +149,7 @@ const TimerScreen = () => {
       secs: newEventDate.seconds(),
       isTimerRunning: true,
       isTimerPaused: false,
+      isTimerStopped: false,
     };
 
     dispatch(updateTimer(initialStartedTimer));
@@ -162,6 +166,7 @@ const TimerScreen = () => {
       secs: 0,
       isTimerRunning: false,
       isTimerPaused: false,
+      isTimerStopped: true,
     };
     dispatch(updateTimer(stoppedTimer));
   }, [dispatch]);

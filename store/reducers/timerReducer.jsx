@@ -16,6 +16,7 @@ const initialState = {
   secs: 0,
   isTimerRunning: false,
   isTimerPaused: false,
+  isTimerStopped: false,
 };
 
 const timerReducer = (state = initialState, action) => {
