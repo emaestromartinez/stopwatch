@@ -4,8 +4,8 @@ import {
 } from '../actions/themeAction';
 
 const initialState = {
-  // theme: 'default',
-  theme: 'light',
+  theme: 'default',
+  // theme: 'light',
 };
 
 const themeReducer = (state = initialState, action) => {

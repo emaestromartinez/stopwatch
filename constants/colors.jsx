@@ -23,10 +23,11 @@ export const palette = {
   lightestGrey: '#dad8d8',
 
   buildTheGiantOrange: '#ea9c00',
+  darkerBuildTheGiantOrange: '#cc8800',
 
 
-  black: '#000000',
-  white: '#FFFFFF',
+  black: '#1a1a1a',
+  white: '#e6e6e6',
 };
 
 export const colors = {
@@ -58,13 +59,18 @@ export const themedColors = {
   },
   light: {
     ...colors,
-    screenBackground: palette.lightestGrey,
+    screenBackground: palette.white,
 
     buttonBackground: palette.darkestGrey,
+    // buttonTextPrimary: palette.white,
 
     textPrimary: palette.darkestGrey,
+    inputBackground: palette.lightGrey,
 
     buttonDisabledOpacity: 0.7,
+
+    headerBGPrimary: palette.lightestGrey,
+    // headerTextPrimary: palette.black,
   },
   dark: {
     ...colors,

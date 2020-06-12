@@ -7,6 +7,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import moment from 'moment';
 
@@ -24,6 +26,7 @@ import ProgressBar from '../components/render-components/ProgressBar';
 import DefaultText from '../components/wrapper-components/DefaultText';
 
 import useTheme from '../constants/themeHooks';
+import { colors } from '../constants/colors';
 
 
 const TimerScreen = () => {
@@ -182,7 +185,6 @@ const TimerScreen = () => {
 
   // TIMER LAYOUT;
   return (
-    // <KeyboardAvoidingView behavior="position" keyboardVerticalOffset="30">
     <TouchableWithoutFeedback
       onPress={() => {
         Keyboard.dismiss();
@@ -224,7 +226,10 @@ const TimerScreen = () => {
         <View style={styles.hideTimerContainer}>
           <TouchableOpacity onPress={hiddenTimerSwitchHandler}>
             <View style={{ ...styles.hideTimerButton, borderColor: colors.buttonBorderPrimary }}>
-              <DefaultText style={{ ...styles.hideTimerText, color: colors.buttonTextPrimary }} numberOfLines={1}>
+              <DefaultText
+                style={{ ...styles.hideTimerText, color: colors.buttonTextPrimary }}
+                numberOfLines={1}
+              >
                 {hideShowTimerText}
               </DefaultText>
             </View>
@@ -259,24 +264,27 @@ const TimerScreen = () => {
         </View>
       </View>
     </TouchableWithoutFeedback>
-    // </KeyboardAvoidingView>
   );
 };
-export const screenOptions = (navData) => ({
-  headerTitle: 'Stop watch',
-  headerRight: () => (
-    <HeaderButtons HeaderButtonComponent={HeaderButton}>
-      <Item
-        title="Menu"
-        iconName="ios-menu"
-        onPress={() => {
-          navData.navigation.openDrawer();
-        }}
-      />
-    </HeaderButtons>
-  ) });
+export const screenOptions = (navData) =>
+  ({
+    headerTitle: 'Stop watch',
+    headerRight: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title="Menu"
+          iconName="ios-menu"
+          onPress={() => {
+            navData.navigation.openDrawer();
+          }}
+        />
+      </HeaderButtons>
+    ) });
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   screen: {
     flex: 1,
     alignItems: 'center',

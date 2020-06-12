@@ -11,36 +11,51 @@ import {
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View } from 'react-native';
+import { useSelector } from 'react-redux';
 import useTheme from '../constants/themeHooks';
 
 import TimerScreen, { screenOptions } from '../screens/TimerScreen';
 
-const { colors } = useTheme();
+// const { colors } = useTheme('default');
 
-const defaultStackNavOptions = {
-  headerStyle: {
-    backgroundColor: colors.headerBGPrimary,
-  },
-  headerTitleStyle: {
-    fontFamily: 'open-sans-bold',
-  },
-  headerTitleContainerStyle: {
-    width: '60%',
-  },
-  headerBackTitleStyle: {
-    fontFamily: 'open-sans',
-  },
-  headerTintColor: colors.headerTextPrimary,
-};
 
 const TimerStackNavigator = createStackNavigator();
 const MainDrawerNavigator = createDrawerNavigator();
 
-export const TimerNavigator = () => (
-  <TimerStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
-    <TimerStackNavigator.Screen name="Timer" component={TimerScreen} options={screenOptions} />
-  </TimerStackNavigator.Navigator>
-);
+export const TimerNavigator = () => {
+  // Color theme
+  const themeStore = useSelector((state) => state.theme);
+  const { colors } = useTheme(themeStore.theme);
+
+  const defaultStackNavOptions = {
+    headerStyle: {
+      backgroundColor: colors.headerBGPrimary,
+    },
+    headerTitleStyle: {
+      fontFamily: 'open-sans-bold',
+    },
+    headerTitleContainerStyle: {
+      width: '60%',
+    },
+    headerBackTitleStyle: {
+      fontFamily: 'open-sans',
+    },
+    headerTintColor: colors.headerTextPrimary,
+  };
+
+  return (
+    <TimerStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+      <TimerStackNavigator.Screen
+        name="Timer"
+        component={TimerScreen}
+        options={screenOptions}
+        initialParams={{
+          colors: { colors },
+        }}
+      />
+    </TimerStackNavigator.Navigator>
+  );
+};
 
 export const MainNavigator = () => (
 
@@ -64,7 +79,6 @@ export const MainNavigator = () => (
     <MainDrawerNavigator.Screen
       name="Timer"
       component={TimerNavigator}
-
     />
   </MainDrawerNavigator.Navigator>
 );
