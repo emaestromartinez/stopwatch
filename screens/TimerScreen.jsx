@@ -28,6 +28,10 @@ import DefaultText from '../components/wrapper-components/DefaultText';
 import useTheme from '../constants/themeHooks';
 import { colors } from '../constants/colors';
 
+const TimerType = {
+  input: 1,
+  timePicker: 2,
+};
 
 const TimerScreen = () => {
   // const TimerScreen = (props) => {
@@ -36,6 +40,9 @@ const TimerScreen = () => {
   // Color theme
   const themeStore = useSelector((state) => state.theme);
   const { colors } = useTheme(themeStore.theme);
+
+  // Type of timer;
+  const [timerType, setTimerType] = useState(TimerType.timePicker);
 
   // Timer inputs things;
   const [secondsInput, setSecondsInput] = useState('');
@@ -62,7 +69,6 @@ const TimerScreen = () => {
     setIsTimerHidden((value) => !value);
   };
 
-
   // Timer interval things;
   const currentTimer = useSelector((state) => state.timer);
 
@@ -77,7 +83,6 @@ const TimerScreen = () => {
     timerProgress = 0;
   } else if (finalEventDate && eventDate) {
     timerProgress = (1 - (eventDate - 0) / (finalEventDate - 0));
-    console.log(timerProgress);
   }
 
 
@@ -196,7 +201,7 @@ const TimerScreen = () => {
       }}
     >
       <View style={{ ...styles.screen, backgroundColor: colors.screenBackground }}>
-
+        { (timerType === TimerType.input) && (
         <View style={styles.inputsContainer}>
           <View style={styles.inputContainer}>
             <Input
@@ -226,7 +231,7 @@ const TimerScreen = () => {
             <DefaultText style={styles.inputText}>Seconds</DefaultText>
           </View>
         </View>
-
+        )}
 
         <View style={styles.hideTimerContainer}>
           <TouchableOpacity onPress={hiddenTimerSwitchHandler}>
@@ -245,6 +250,7 @@ const TimerScreen = () => {
           <ProgressBar timerProgress={timerProgress} />
         </View>
 
+        { (timerType === TimerType.input) && (
         <View style={styles.timerContainer}>
           <DayHourMinSec
             style={styles.timeStyles}
@@ -255,6 +261,10 @@ const TimerScreen = () => {
             hidden={isTimerHidden}
             finished={isTimerFinished}
           />
+        </View>
+        )}
+
+        <View style={styles.buttonsContainer}>
           <StopStartPauseButtons
             isTimerRunning={isTimerRunning}
             isTimerPaused={isTimerPaused}
@@ -344,10 +354,16 @@ const styles = StyleSheet.create({
 
   // Timer styles
   timerContainer: {
-    height: '50%',
+    height: '20%',
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
+  buttonsContainer: {
+    height: '20%',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+
 });
 
 export default TimerScreen;
