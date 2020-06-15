@@ -8,16 +8,15 @@ import {
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
 
-
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import useTheme from '../constants/themeHooks';
 
 import TimerScreen, { screenOptions } from '../screens/TimerScreen';
+import CreateIntervalScreen from '../screens/CreateIntervalScreen';
 
 // const { colors } = useTheme('default');
-
 
 const TimerStackNavigator = createStackNavigator();
 const MainDrawerNavigator = createDrawerNavigator();
@@ -47,7 +46,7 @@ export const TimerNavigator = () => {
     <TimerStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
       <TimerStackNavigator.Screen
         name="Timer"
-        component={TimerScreen}
+        component={CreateIntervalScreen}
         options={screenOptions}
         initialParams={{
           colors: { colors },
@@ -82,6 +81,5 @@ export const MainNavigator = () => (
     />
   </MainDrawerNavigator.Navigator>
 );
-
 
 export default 3;

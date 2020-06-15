@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import moment from 'moment';
 
-
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -21,6 +20,7 @@ import { pauseTimer, updateTimer } from '../store/actions/timerAction';
 import Input from '../components/wrapper-components/Input';
 import HeaderButton from '../components/wrapper-components/HeaderButton';
 import DayHourMinSec from '../components/render-components/DayHourMinSec';
+import TimerInputs from '../components/render-components/TimerInputs';
 import StopStartPauseButtons from '../components/render-components/StopStartPauseButtons';
 import ProgressBar from '../components/render-components/ProgressBar';
 import DefaultText from '../components/wrapper-components/DefaultText';
@@ -42,13 +42,12 @@ const TimerScreen = () => {
   const { colors } = useTheme(themeStore.theme);
 
   // Type of timer;
-  const [timerType, setTimerType] = useState(TimerType.timePicker);
+  const [timerType, setTimerType] = useState(TimerType.input);
 
   // Timer inputs things;
   const [secondsInput, setSecondsInput] = useState('');
   const [minutesInput, setMinutesInput] = useState('');
   const [isTimerHidden, setIsTimerHidden] = useState(false);
-
 
   const checkForZeroString = (input) => {
     if (input === '0'
@@ -59,7 +58,11 @@ const TimerScreen = () => {
   };
   const onChangeSecondsHandler = (inputText) => {
     if (checkForZeroString(inputText)) setSecondsInput('');
-    else setSecondsInput(inputText.replace(/[^0-9]/g, ''));
+    else {
+      console.log(inputText);
+
+      setSecondsInput(inputText.replace(/[^0-9]/g, ''));
+    }
   };
   const onChangeMinutesHandler = (inputText) => {
     if (checkForZeroString(inputText)) setSecondsInput('');
@@ -84,7 +87,6 @@ const TimerScreen = () => {
   } else if (finalEventDate && eventDate) {
     timerProgress = (1 - (eventDate - 0) / (finalEventDate - 0));
   }
-
 
   if (eventDate === undefined) {
     eventDate = moment.duration().add({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -160,7 +162,6 @@ const TimerScreen = () => {
     dispatch(updateTimer(initialStartedTimer));
   }, [dispatch, secondsInput, minutesInput]);
 
-
   const stopTimerHandler = useCallback(() => {
     setIsTimerHidden(false);
     const stoppedTimer = {
@@ -201,7 +202,9 @@ const TimerScreen = () => {
       }}
     >
       <View style={{ ...styles.screen, backgroundColor: colors.screenBackground }}>
+
         { (timerType === TimerType.input) && (
+
         <View style={styles.inputsContainer}>
           <View style={styles.inputContainer}>
             <Input
@@ -209,7 +212,6 @@ const TimerScreen = () => {
                 color: colors.textPrimary,
                 backgroundColor: colors.inputBackground }}
               value={minutesInput}
-
               onChangeText={(value) => onChangeMinutesHandler(value)}
               keyboardType="numeric"
               blurOnSubmit
@@ -327,6 +329,17 @@ const styles = StyleSheet.create({
     width: 95,
     fontSize: 25,
     textAlign: 'center',
+  },
+
+  // Time picker container
+  timePickerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '90%',
+    // backgroundColor: 'red',
+    paddingVertical: 30,
+    height: '10%',
   },
 
   // Hide timer styles
