@@ -36,6 +36,7 @@ const CreateIntervalScreen = (props) => {
   const [intervalList, setIntervalList] = useState([
     {
       id: '0',
+      hours: '1',
       mins: '1',
       secs: '2',
     },
@@ -101,7 +102,9 @@ const CreateIntervalScreen = (props) => {
     const newTimer = moment.duration().add(
       { days: 0, hours: 0, minutes: parseInt(minutesInput, 10), seconds: parseInt(secondsInput, 10) },
     );
-    setIntervalList((currentList) => [...currentList, { id: String(currentList.length + 1), mins: newTimer.minutes() || 0, secs: newTimer.seconds() || 0 }]);
+    setIntervalList((currentList) => [...currentList,
+      { id: String(currentList.length + 1), hours: newTimer.hours(), mins: newTimer.minutes() || 0, secs: newTimer.seconds() || 0 },
+    ]);
   };
 
   return (
@@ -115,7 +118,7 @@ const CreateIntervalScreen = (props) => {
           <FlatList
             data={intervalList}
             // renderItem={({ item }) => <Item title={item.minutes} />}
-            renderItem={({ item, index }) => (
+            renderItem={({ item }) => (
 
               <View style={styles.listItem}>
                 <DefaultText
@@ -123,14 +126,26 @@ const CreateIntervalScreen = (props) => {
                   numberOfLines={1}
                 >
                   Interval
+                  {' '}
                   {item.id}
                   :
-                  {' '}
                 </DefaultText>
+                { item.hours !== 0
+                && (
+
                 <DefaultText style={{ ...styles.listItemText, ...styles.listItemTimer }}>
-                  {`${item.mins === 0 || item.mins < 10 ? `0${item.mins}` : item.mins}m : ${
-                    item.secs === 0 || item.secs < 10 ? `0${item.secs}` : item.secs}s`}
+                  {`${item.hours}h : ${
+                    item.mins === 0 || item.mins < 10 ? `0${item.mins}` : item.mins
+                  }m : ${item.secs === 0 || item.secs < 10 ? `0${item.secs}` : item.secs}s`}
                 </DefaultText>
+                )}
+                { !item.hours
+                && (
+                  <DefaultText style={{ ...styles.listItemText, ...styles.listItemTimer }}>
+                    {`${item.mins === 0 || item.mins < 10 ? `0${item.mins}` : item.mins}m : ${
+                      item.secs === 0 || item.secs < 10 ? `0${item.secs}` : item.secs}s`}
+                  </DefaultText>
+                )}
               </View>
 
             )}
@@ -206,11 +221,11 @@ const styles = StyleSheet.create({
   listItemText: {
     backgroundColor: 'blue',
     fontSize: 28,
-    width: '60%',
+    width: '45%',
   },
   listItemTimer: {
     backgroundColor: 'green',
-    width: '40%',
+    width: '60%',
   },
   listItemFrontText: {
   },
