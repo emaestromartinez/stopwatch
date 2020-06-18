@@ -203,7 +203,7 @@ const TimerScreen = () => {
     >
       <View style={{ ...styles.screen, backgroundColor: colors.screenBackground }}>
 
-        { (timerType === TimerType.input) && (
+        {/* { (timerType === TimerType.input) && (
 
         <View style={styles.inputsContainer}>
           <View style={styles.inputContainer}>
@@ -233,7 +233,16 @@ const TimerScreen = () => {
             <DefaultText style={styles.inputText}>Seconds</DefaultText>
           </View>
         </View>
-        )}
+        )} */}
+        <View style={styles.inputsContainer}>
+
+          <TimerInputs
+            onChangeMinutesHandler={onChangeMinutesHandler}
+            onChangeSecondsHandler={onChangeSecondsHandler}
+            minutesInput={minutesInput}
+            secondsInput={secondsInput}
+          />
+        </View>
 
         <View style={styles.hideTimerContainer}>
           <TouchableOpacity onPress={hiddenTimerSwitchHandler}>
@@ -308,27 +317,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 35,
   },
+
   // Input styles
   inputsContainer: {
-    flexDirection: 'row',
     width: '65%',
     height: '40%',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  inputText: {
-    fontSize: 20,
-  },
-  inputContainer: {
-    alignItems: 'center',
-  },
-  timerInput: {
-    borderBottomColor: 'red',
-    borderBottomWidth: 0,
-    height: 60,
-    width: 95,
-    fontSize: 25,
-    textAlign: 'center',
+    justifyContent: 'center',
   },
 
   // Time picker container

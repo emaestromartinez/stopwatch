@@ -5,13 +5,18 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   FlatList,
+  Button,
+  Alert,
 } from 'react-native';
 import moment from 'moment';
 
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
 
-import Input from '../components/wrapper-components/Input';
+import { Ionicons } from '@expo/vector-icons';
+
+import IconTextButton from '../components/wrapper-components/IconTextButton';
+import TimerInputs from '../components/render-components/TimerInputs';
 import DefaultText from '../components/wrapper-components/DefaultText';
 import HeaderButton from '../components/wrapper-components/HeaderButton';
 
@@ -31,24 +36,34 @@ const CreateIntervalScreen = (props) => {
   const [intervalList, setIntervalList] = useState([
     {
       id: '0',
-      mins: '0',
-      secs: '0',
-    },
-    {
-      id: '1',
       mins: '1',
-      secs: '24',
-    },
-    {
-      id: '2',
-      mins: '1',
-      secs: '24',
+      secs: '2',
     },
   ]);
 
   // Color theme
   const themeStore = useSelector((state) => state.theme);
   const { colors } = useTheme(themeStore.theme);
+  const iconColor = colors.buttonTextPrimary;
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', keyboardDidShow);
+    Keyboard.addListener('keyboardDidHide', keyboardDidHide);
+
+    // cleanup function
+    return () => {
+      Keyboard.removeListener('keyboardDidShow', keyboardDidShow);
+      Keyboard.removeListener('keyboardDidHide', keyboardDidHide);
+    };
+  }, []);
+
+  const keyboardDidShow = () => {
+
+  };
+
+  const keyboardDidHide = () => {
+
+  };
 
   const checkForZeroString = (input) => {
     if (input === '0'
@@ -57,18 +72,37 @@ const CreateIntervalScreen = (props) => {
     || input === '0000') return true;
     return false;
   };
-  // const onChangeSecondsHandler = (inputText) => {
-  //   if (checkForZeroString(inputText)) setSecondsInput('');
-  //   else {
-  //     console.log(inputText);
+  const onChangeSecondsHandler = (inputText) => {
+    if (checkForZeroString(inputText)) setSecondsInput('');
+    else {
+      setSecondsInput(inputText.replace(/[^0-9]/g, ''));
+    }
+  };
+  const onChangeMinutesHandler = (inputText) => {
+    if (checkForZeroString(inputText)) setSecondsInput('');
+    else setMinutesInput(inputText.replace(/[^0-9]/g, ''));
+  };
 
-  //     setSecondsInput(inputText.replace(/[^0-9]/g, ''));
-  //   }
-  // };
-  // const onChangeMinutesHandler = (inputText) => {
-  //   if (checkForZeroString(inputText)) setSecondsInput('');
-  //   else setMinutesInput(inputText.replace(/[^0-9]/g, ''));
-  // };
+  const addNewInterval = () => {
+    if (!minutesInput && !secondsInput) {
+      // Assert that proper values are inserted;
+      Alert.alert('Correct your times!', 'Introduce seconds or minutes in order to add a new timer to the interval.', [
+        { text: 'Sorry Mr. Sexyman, won\'t happen again!', style: 'cancel' },
+      ]);
+      return;
+    }
+    if (parseInt(secondsInput, 10) >= 60 && minutesInput) {
+      // Assert that proper values are inserted;
+      Alert.alert('Correct your times!', 'If seconds are higher than 60, the minute field must be empty.', [
+        { text: 'Sorry Mr. Sexyman, won\'t happen again!', style: 'cancel' },
+      ]);
+      return;
+    }
+    const newTimer = moment.duration().add(
+      { days: 0, hours: 0, minutes: parseInt(minutesInput, 10), seconds: parseInt(secondsInput, 10) },
+    );
+    setIntervalList((currentList) => [...currentList, { id: String(currentList.length + 1), mins: newTimer.minutes() || 0, secs: newTimer.seconds() || 0 }]);
+  };
 
   return (
     <TouchableWithoutFeedback
@@ -77,7 +111,7 @@ const CreateIntervalScreen = (props) => {
       }}
     >
       <View style={{ ...styles.screen, backgroundColor: colors.screenBackground }}>
-        <View style={styles.listContainer}>
+        <View style={{ ...styles.listContainer }}>
           <FlatList
             data={intervalList}
             // renderItem={({ item }) => <Item title={item.minutes} />}
@@ -89,7 +123,7 @@ const CreateIntervalScreen = (props) => {
                   numberOfLines={1}
                 >
                   Interval
-                  {index}
+                  {item.id}
                   :
                   {' '}
                 </DefaultText>
@@ -104,6 +138,30 @@ const CreateIntervalScreen = (props) => {
           />
         </View>
 
+        <View style={{ ...styles.inputsContainer }}>
+          <TimerInputs
+            onChangeMinutesHandler={onChangeMinutesHandler}
+            onChangeSecondsHandler={onChangeSecondsHandler}
+            minutesInput={minutesInput}
+            secondsInput={secondsInput}
+            // showText={showInputsText}
+            containerStyle={{ flexDirection: 'row' }}
+            // timerInputStyle={{ height: 40 }}
+            minutesText="min"
+            secondsText="sec"
+          />
+        </View>
+        <View style={{ ...styles.longButtonContainer }}>
+          <IconTextButton
+            // disabled={isTimerRunning || (!secondsInput && !minutesInput)}
+            onPress={() => addNewInterval()}
+            style={styles.longButton}
+            text="Add new timer"
+            textStyle={styles.longButtonTextStyle}
+          >
+            <Ionicons name="md-add" size={28} color={iconColor} />
+          </IconTextButton>
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -118,7 +176,7 @@ export const screenOptions = (navData) =>
           title="Menu"
           iconName="ios-menu"
           onPress={() => {
-            navData.navigation.openDrawer();
+            navData.navigation.ºopenDrawer();
           }}
         />
       </HeaderButtons>
@@ -128,13 +186,15 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     padding: 35,
+    // paddingTop: screenPaddingTop,
   },
+  // List styles;
   listContainer: {
     width: '100%',
-    height: '60%',
-    backgroundColor: 'red',
+    // height: listContainerHeight,
+    height: '75%',
   },
   listItem: {
     flexDirection: 'row',
@@ -153,6 +213,36 @@ const styles = StyleSheet.create({
     width: '40%',
   },
   listItemFrontText: {
+  },
+
+  // Input styles;
+  inputsContainer: {
+    width: '100%',
+    // height: inputsContainerHeight,
+    // marginTop: 20,
+    // paddingBottom: 30,
+    justifyContent: 'center',
+    height: '15%',
+  },
+
+  // Button styles;
+  longButtonContainer: {
+    // height: longButtonContainerHeight,
+    width: '100%',
+    alignItems: 'center',
+    height: '10%',
+    justifyContent: 'center',
+  },
+  longButton: {
+    width: 250,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 8,
+  },
+  longButtonTextStyle: {
+    paddingLeft: 15,
+    fontSize: 22,
   },
 
 });

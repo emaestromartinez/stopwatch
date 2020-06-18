@@ -18,6 +18,11 @@ const TimerInputs = (props) => {
     onChangeSecondsHandler,
     minutesInput,
     secondsInput,
+    containerStyle,
+    timerInputStyle,
+    minutesText = 'Minutes',
+    secondsText = 'Seconds',
+    showText = true,
   } = props;
 
   // Color theme
@@ -47,31 +52,43 @@ const TimerInputs = (props) => {
 
   return (
     <View style={styles.inputsContainer}>
-      <View style={styles.inputContainer}>
+      <View style={{ ...styles.inputContainer, ...containerStyle }}>
         <Input
           style={{ ...styles.timerInput,
             color: colors.textPrimary,
-            backgroundColor: colors.inputBackground }}
+            backgroundColor: colors.inputBackground,
+            ...timerInputStyle }}
           value={minutesInput}
           onChangeText={(value) => onChangeMinutesHandler(value)}
           keyboardType="numeric"
           blurOnSubmit
           maxLength={4}
         />
-        <DefaultText style={styles.inputText}> Minutes </DefaultText>
+        { showText
+        && (
+        <View style={styles.inputTextContainer}>
+          <DefaultText style={styles.inputText}>{minutesText}</DefaultText>
+        </View>
+        )}
       </View>
-      <View style={styles.inputContainer}>
+      <View style={{ ...styles.inputContainer, ...containerStyle }}>
         <Input
           style={{ ...styles.timerInput,
             color: colors.textPrimary,
-            backgroundColor: colors.inputBackground }}
+            backgroundColor: colors.inputBackground,
+            ...timerInputStyle }}
           value={secondsInput}
           onChangeText={(value) => onChangeSecondsHandler(value)}
           keyboardType="numeric"
           blurOnSubmit
           maxLength={4}
         />
-        <DefaultText style={styles.inputText}>Seconds</DefaultText>
+        { showText
+        && (
+        <View style={styles.inputTextContainer}>
+          <DefaultText style={styles.inputText}>{secondsText}</DefaultText>
+        </View>
+        )}
       </View>
     </View>
   );
@@ -81,17 +98,18 @@ const styles = StyleSheet.create({
   // Input styles
   inputsContainer: {
     flexDirection: 'row',
-    width: '65%',
-    height: '40%',
+    width: '100%',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
   },
-  inputText: {
-    fontSize: 20,
-  },
+
   inputContainer: {
+    flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
   },
+
   timerInput: {
     borderBottomColor: 'red',
     borderBottomWidth: 0,
@@ -99,6 +117,12 @@ const styles = StyleSheet.create({
     width: 95,
     fontSize: 25,
     textAlign: 'center',
+  },
+  inputText: {
+    fontSize: 20,
+  },
+  inputTextContainer: {
+    justifyContent: 'flex-end',
   },
 });
 

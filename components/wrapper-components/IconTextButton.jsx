@@ -5,13 +5,13 @@ import DefaultText from './DefaultText';
 
 import useTheme from '../../constants/themeHooks';
 
-
 const IconTextButton = (props) => {
   const { style,
     children,
     onPress,
     disabled,
     text,
+    textStyle,
   } = props;
   let { color } = props;
 
@@ -27,7 +27,7 @@ const IconTextButton = (props) => {
         : { ...styles.disabledButton, backgroundColor: color || colors.buttonBackground, opacity: colors.buttonDisabledOpacity, ...style }}
       >
         {children}
-        <DefaultText style={{ ...styles.buttonText, color: colors.buttonTextPrimary }}>{text}</DefaultText>
+        <DefaultText style={{ ...styles.buttonText, color: colors.buttonTextPrimary, ...textStyle }}>{text}</DefaultText>
       </View>
     </TouchableOpacity>
   );

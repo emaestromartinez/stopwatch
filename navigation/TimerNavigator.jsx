@@ -46,6 +46,7 @@ export const TimerNavigator = () => {
     <TimerStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
       <TimerStackNavigator.Screen
         name="Timer"
+        // component={TimerScreen}
         component={CreateIntervalScreen}
         options={screenOptions}
         initialParams={{
