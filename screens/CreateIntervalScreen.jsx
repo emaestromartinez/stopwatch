@@ -21,6 +21,7 @@ import DefaultText from '../components/wrapper-components/DefaultText';
 import HeaderButton from '../components/wrapper-components/HeaderButton';
 
 import useTheme from '../constants/themeHooks';
+import { updateTimer } from '../store/actions/timerAction';
 
 const TimerType = {
   input: 1,
@@ -30,6 +31,8 @@ const TimerType = {
 const CreateIntervalScreen = (props) => {
   // const TimerScreen = (props) => {
   const { navigation } = props;
+
+  const dispatch = useDispatch();
 
   const [secondsInput, setSecondsInput] = useState('');
   const [minutesInput, setMinutesInput] = useState('');
@@ -80,7 +83,7 @@ const CreateIntervalScreen = (props) => {
     }
   };
   const onChangeMinutesHandler = (inputText) => {
-    if (checkForZeroString(inputText)) setSecondsInput('');
+    if (checkForZeroString(inputText)) setMinutesInput('');
     else setMinutesInput(inputText.replace(/[^0-9]/g, ''));
   };
 
@@ -107,6 +110,21 @@ const CreateIntervalScreen = (props) => {
     ]);
   };
 
+  const saveInterval = () => {
+    // Convert the interval to an easier convertableback type;
+
+    // intervalList needs to be converted;
+    const eventTimersList = [];
+
+    intervalList.forEach((interval) => {
+      eventTimersList.push(moment.duration().add(
+        { days: 0, hours: parseInt(interval.minhourss, 10), minutes: parseInt(interval.mins, 10), seconds: parseInt(interval.secs, 10) },
+      ));
+    });
+    console.log(eventTimersList);
+    dispatch(updateTimer(eventTimersList));
+  };
+
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -114,6 +132,7 @@ const CreateIntervalScreen = (props) => {
       }}
     >
       <View style={{ ...styles.screen, backgroundColor: colors.screenBackground }}>
+
         <View style={{ ...styles.listContainer }}>
           <FlatList
             data={intervalList}
@@ -153,6 +172,18 @@ const CreateIntervalScreen = (props) => {
           />
         </View>
 
+        <View style={{ ...styles.longButtonContainer }}>
+          <IconTextButton
+            // disabled={isTimerRunning || (!secondsInput && !minutesInput)}
+            onPress={() => addNewInterval()}
+            style={styles.longButton}
+            text="Add new timer"
+            textStyle={styles.longButtonTextStyle}
+          >
+            <Ionicons name="md-add" size={28} color={iconColor} />
+          </IconTextButton>
+        </View>
+
         <View style={{ ...styles.inputsContainer }}>
           <TimerInputs
             onChangeMinutesHandler={onChangeMinutesHandler}
@@ -166,17 +197,19 @@ const CreateIntervalScreen = (props) => {
             secondsText="sec"
           />
         </View>
+
         <View style={{ ...styles.longButtonContainer }}>
           <IconTextButton
             // disabled={isTimerRunning || (!secondsInput && !minutesInput)}
-            onPress={() => addNewInterval()}
+            onPress={() => saveInterval()}
             style={styles.longButton}
-            text="Add new timer"
+            text="Use this interval!"
             textStyle={styles.longButtonTextStyle}
           >
-            <Ionicons name="md-add" size={28} color={iconColor} />
+            <Ionicons name="md-save" size={28} color={iconColor} />
           </IconTextButton>
         </View>
+
       </View>
     </TouchableWithoutFeedback>
   );
@@ -197,6 +230,11 @@ export const screenOptions = (navData) =>
       </HeaderButtons>
     ) });
 
+// 50 40 10 shows properly on my screen;
+const listContainerHeight = '70%';
+const inputsContainerHeight = '20%';
+const longButtonContainerHeight = '10%';
+
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -208,8 +246,8 @@ const styles = StyleSheet.create({
   // List styles;
   listContainer: {
     width: '100%',
-    // height: listContainerHeight,
-    height: '75%',
+    height: listContainerHeight,
+    // height: '75%',
   },
   listItem: {
     flexDirection: 'row',
@@ -233,7 +271,7 @@ const styles = StyleSheet.create({
   // Input styles;
   inputsContainer: {
     width: '100%',
-    // height: inputsContainerHeight,
+    height: inputsContainerHeight,
     // marginTop: 20,
     // paddingBottom: 30,
     justifyContent: 'center',
@@ -242,10 +280,10 @@ const styles = StyleSheet.create({
 
   // Button styles;
   longButtonContainer: {
-    // height: longButtonContainerHeight,
+    height: longButtonContainerHeight,
     width: '100%',
     alignItems: 'center',
-    height: '10%',
+    // height: '10%',
     justifyContent: 'center',
   },
   longButton: {
