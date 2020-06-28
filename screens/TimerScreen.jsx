@@ -79,19 +79,28 @@ const TimerScreen = () => {
   const dispatch = useDispatch();
 
   let { eventDate } = currentTimer;
-  const { finalEventDate, days, hours, mins, secs, isTimerRunning, isTimerPaused, isTimerStopped } = currentTimer;
+  const {
+    finalEventDate, days,
+    hours, mins, secs, isTimerRunning,
+    isTimerPaused, isTimerStopped,
+    lastSavedInterval,
+  } = currentTimer;
   const isTimerFinished = (!eventDate || eventDate <= 0);
 
+  // Calculate timer progress second to second;
   let timerProgress = 0;
   if (isTimerStopped) {
     timerProgress = 0;
   } else if (finalEventDate && eventDate) {
     timerProgress = (1 - (eventDate - 0) / (finalEventDate - 0));
   }
-
   if (eventDate === undefined) {
     eventDate = moment.duration().add({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   }
+
+  // Calculate interval list from saved state;
+  const intervalList = lastSavedInterval;
+  // console.log(intervalList);
 
   const startInterval = () => {
     const interval = setInterval(() => {
@@ -296,7 +305,9 @@ const TimerScreen = () => {
 
         <View style={styles.content}>
           <View>
-            <IntervalList />
+            <IntervalList
+              intervalList={intervalList}
+            />
           </View>
           <View style={styles.buttonsContainer}>
             <StopStartPauseButtons

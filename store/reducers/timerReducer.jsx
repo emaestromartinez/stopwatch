@@ -17,7 +17,7 @@ const initialState = {
   isTimerRunning: false,
   isTimerPaused: false,
   isTimerStopped: false,
-  lastInterval: [],
+  lastSavedInterval: [],
 };
 
 const timerReducer = (state = initialState, action) => {

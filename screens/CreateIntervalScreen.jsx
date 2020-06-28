@@ -110,19 +110,36 @@ const CreateIntervalScreen = (props) => {
     ]);
   };
 
-  const saveInterval = () => {
+  const saveInterval = useCallback(() => {
     // Convert the interval to an easier convertableback type;
 
     // intervalList needs to be converted;
     const eventTimersList = [];
+    console.log(intervalList);
 
     intervalList.forEach((interval) => {
       eventTimersList.push(moment.duration().add(
         { days: 0, hours: parseInt(interval.hours, 10), minutes: parseInt(interval.mins, 10), seconds: parseInt(interval.secs, 10) },
       ));
     });
+    console.log(eventTimersList);
     dispatch(updateTimer(eventTimersList));
-  };
+  }, [dispatch, intervalList]);
+
+  // const saveInterval = () => {
+  //   // Convert the interval to an easier convertableback type;
+
+  //   // intervalList needs to be converted;
+  //   const eventTimersList = [];
+
+  //   intervalList.forEach((interval) => {
+  //     eventTimersList.push(moment.duration().add(
+  //       { days: 0, hours: parseInt(interval.hours, 10), minutes: parseInt(interval.mins, 10), seconds: parseInt(interval.secs, 10) },
+  //     ));
+  //   });
+  //   console.log(eventTimersList);
+  //   dispatch(updateTimer(eventTimersList));
+  // };
 
   return (
     <TouchableWithoutFeedback
