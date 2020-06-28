@@ -17,7 +17,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import IconTextButton from '../components/wrapper-components/IconTextButton';
 import TimerInputs from '../components/render-components/TimerInputs';
-import DefaultText from '../components/wrapper-components/DefaultText';
+import IntervalList from '../components/render-components/IntervalList';
 import HeaderButton from '../components/wrapper-components/HeaderButton';
 
 import useTheme from '../constants/themeHooks';
@@ -133,41 +133,8 @@ const CreateIntervalScreen = (props) => {
       <View style={{ ...styles.screen, backgroundColor: colors.screenBackground }}>
 
         <View style={{ ...styles.listContainer }}>
-          <FlatList
-            data={intervalList}
-            // renderItem={({ item }) => <Item title={item.minutes} />}
-            renderItem={({ item }) => (
-
-              <View style={styles.listItem}>
-                <DefaultText
-                  style={{ ...styles.listItemText, ...styles.listItemFrontText }}
-                  numberOfLines={1}
-                >
-                  Interval
-                  {' '}
-                  {item.id}
-                  :
-                </DefaultText>
-                { item.hours !== 0
-                && (
-
-                <DefaultText style={{ ...styles.listItemText, ...styles.listItemTimer }}>
-                  {`${item.hours}h : ${
-                    item.mins === 0 || item.mins < 10 ? `0${item.mins}` : item.mins
-                  }m : ${item.secs === 0 || item.secs < 10 ? `0${item.secs}` : item.secs}s`}
-                </DefaultText>
-                )}
-                { !item.hours
-                && (
-                  <DefaultText style={{ ...styles.listItemText, ...styles.listItemTimer }}>
-                    {`${item.mins === 0 || item.mins < 10 ? `0${item.mins}` : item.mins}m : ${
-                      item.secs === 0 || item.secs < 10 ? `0${item.secs}` : item.secs}s`}
-                  </DefaultText>
-                )}
-              </View>
-
-            )}
-            keyExtractor={(item) => item.id}
+          <IntervalList
+            intervalList={intervalList}
           />
         </View>
 
@@ -251,7 +218,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-evenly',
     padding: 35,
-    // paddingTop: screenPaddingTop,
+    paddingTop: 45,
   },
   // List styles;
   listContainer: {
@@ -285,7 +252,6 @@ const styles = StyleSheet.create({
     // marginTop: 20,
     // paddingBottom: 30,
     justifyContent: 'center',
-    height: '15%',
   },
 
   // Button styles;

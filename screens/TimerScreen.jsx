@@ -19,6 +19,7 @@ import HeaderButton from '../components/wrapper-components/HeaderButton';
 import DayHourMinSec from '../components/render-components/DayHourMinSec';
 import TimerInputs from '../components/render-components/TimerInputs';
 import StopStartPauseButtons from '../components/render-components/StopStartPauseButtons';
+import IntervalList from '../components/render-components/IntervalList';
 import ProgressBar from '../components/render-components/ProgressBar';
 import DefaultText from '../components/wrapper-components/DefaultText';
 
@@ -195,7 +196,6 @@ const TimerScreen = () => {
   if (isTimerHidden) hideShowTimerText = 'Show timer!';
 
   // TIMER LAYOUTS;
-
   const layoutNotUsingSavedInterval = (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -287,15 +287,17 @@ const TimerScreen = () => {
         )} */}
 
         <View style={styles.switchContainer}>
+          <DefaultText> Use saved interval!</DefaultText>
           <Switch
             value={usingSavedInterval}
             onValueChange={useSavedIntervalHandler}
           />
-          <DefaultText> Use saved interval!</DefaultText>
         </View>
 
         <View style={styles.content}>
-
+          <View>
+            <IntervalList />
+          </View>
           <View style={styles.buttonsContainer}>
             <StopStartPauseButtons
               isTimerRunning={isTimerRunning}
@@ -315,7 +317,9 @@ const TimerScreen = () => {
     </TouchableWithoutFeedback>
   );
 
-  return layoutUsingSavedInterval;
+  const activeLayout = usingSavedInterval ? layoutUsingSavedInterval : layoutNotUsingSavedInterval;
+
+  return activeLayout;
 };
 export const screenOptions = (navData) =>
   ({
@@ -338,6 +342,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 35,
+    paddingHorizontal: 10,
   },
 
   switchContainer: {

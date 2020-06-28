@@ -8,11 +8,9 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import * as Progress from 'react-native-progress';
 
-
 import { useSelector } from 'react-redux';
 import useTheme from '../../constants/themeHooks';
 import DefaultText from '../wrapper-components/DefaultText';
-
 
 const ProgressBar = (props) => {
   const { navigation, timerProgress } = props;
