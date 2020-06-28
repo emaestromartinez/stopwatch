@@ -2,13 +2,11 @@ import React, { useEffect, useCallback, useState } from 'react';
 import {
   View,
   StyleSheet,
-  Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
-  KeyboardAvoidingView,
-  Platform,
+  Switch,
 } from 'react-native';
 import moment from 'moment';
 
@@ -17,7 +15,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { pauseTimer, updateTimer } from '../store/actions/timerAction';
 
-import Input from '../components/wrapper-components/Input';
 import HeaderButton from '../components/wrapper-components/HeaderButton';
 import DayHourMinSec from '../components/render-components/DayHourMinSec';
 import TimerInputs from '../components/render-components/TimerInputs';
@@ -26,7 +23,6 @@ import ProgressBar from '../components/render-components/ProgressBar';
 import DefaultText from '../components/wrapper-components/DefaultText';
 
 import useTheme from '../constants/themeHooks';
-import { colors } from '../constants/colors';
 
 const TimerType = {
   input: 1,
@@ -40,6 +36,9 @@ const TimerScreen = () => {
   // Color theme
   const themeStore = useSelector((state) => state.theme);
   const { colors } = useTheme(themeStore.theme);
+
+  // Normal timer or saved interval;
+  const [usingSavedInterval, setUsingSavedInterval] = useState(false);
 
   // Type of timer;
   const [timerType, setTimerType] = useState(TimerType.input);
@@ -59,8 +58,6 @@ const TimerScreen = () => {
   const onChangeSecondsHandler = (inputText) => {
     if (checkForZeroString(inputText)) setSecondsInput('');
     else {
-      console.log(inputText);
-
       setSecondsInput(inputText.replace(/[^0-9]/g, ''));
     }
   };
@@ -70,6 +67,9 @@ const TimerScreen = () => {
   };
   const hiddenTimerSwitchHandler = () => {
     setIsTimerHidden((value) => !value);
+  };
+  const useSavedIntervalHandler = () => {
+    setUsingSavedInterval((value) => !value);
   };
 
   // Timer interval things;
@@ -194,46 +194,26 @@ const TimerScreen = () => {
   let hideShowTimerText = 'Hide timer!';
   if (isTimerHidden) hideShowTimerText = 'Show timer!';
 
-  // TIMER LAYOUT;
-  return (
+  // TIMER LAYOUTS;
+
+  const layoutNotUsingSavedInterval = (
     <TouchableWithoutFeedback
       onPress={() => {
         Keyboard.dismiss();
       }}
     >
       <View style={{ ...styles.screen, backgroundColor: colors.screenBackground }}>
-
-        {/* { (timerType === TimerType.input) && (
-
-        <View style={styles.inputsContainer}>
-          <View style={styles.inputContainer}>
-            <Input
-              style={{ ...styles.timerInput,
-                color: colors.textPrimary,
-                backgroundColor: colors.inputBackground }}
-              value={minutesInput}
-              onChangeText={(value) => onChangeMinutesHandler(value)}
-              keyboardType="numeric"
-              blurOnSubmit
-              maxLength={4}
-            />
-            <DefaultText style={styles.inputText}> Minutes </DefaultText>
-          </View>
-          <View style={styles.inputContainer}>
-            <Input
-              style={{ ...styles.timerInput,
-                color: colors.textPrimary,
-                backgroundColor: colors.inputBackground }}
-              value={secondsInput}
-              onChangeText={(value) => onChangeSecondsHandler(value)}
-              keyboardType="numeric"
-              blurOnSubmit
-              maxLength={4}
-            />
-            <DefaultText style={styles.inputText}>Seconds</DefaultText>
-          </View>
+        <View style={styles.switchContainer}>
+          <Switch
+            value={usingSavedInterval}
+            onValueChange={useSavedIntervalHandler}
+          />
+          <DefaultText> Use saved interval!</DefaultText>
         </View>
+        {/* { (usingSavedInterval) && (
+
         )} */}
+
         <View style={styles.inputsContainer}>
 
           <TimerInputs
@@ -288,9 +268,54 @@ const TimerScreen = () => {
             pauseTimerHandler={pauseTimerHandler}
           />
         </View>
+
       </View>
     </TouchableWithoutFeedback>
   );
+
+  const layoutUsingSavedInterval = (
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}
+    >
+
+      <View style={{ ...styles.screen, backgroundColor: colors.screenBackground }}>
+
+        {/* { (usingSavedInterval) && (
+
+        )} */}
+
+        <View style={styles.switchContainer}>
+          <Switch
+            value={usingSavedInterval}
+            onValueChange={useSavedIntervalHandler}
+          />
+          <DefaultText> Use saved interval!</DefaultText>
+        </View>
+
+        <View style={styles.content}>
+
+          <View style={styles.buttonsContainer}>
+            <StopStartPauseButtons
+              isTimerRunning={isTimerRunning}
+              isTimerPaused={isTimerPaused}
+              isTimerHidden={isTimerHidden}
+              secondsInput={secondsInput}
+              minutesInput={minutesInput}
+              stopTimerHandler={stopTimerHandler}
+              startTimerHandler={startTimerHandler}
+              resumeTimerHandler={resumeTimerHandler}
+              pauseTimerHandler={pauseTimerHandler}
+            />
+          </View>
+        </View>
+
+      </View>
+    </TouchableWithoutFeedback>
+  );
+
+  return layoutUsingSavedInterval;
 };
 export const screenOptions = (navData) =>
   ({
@@ -308,14 +333,21 @@ export const screenOptions = (navData) =>
     ) });
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   screen: {
+    flex: 1,
+    paddingVertical: 35,
+  },
+
+  switchContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  content: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 35,
   },
 
   // Input styles

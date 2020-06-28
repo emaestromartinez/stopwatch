@@ -37,12 +37,12 @@ const CreateIntervalScreen = (props) => {
   const [secondsInput, setSecondsInput] = useState('');
   const [minutesInput, setMinutesInput] = useState('');
   const [intervalList, setIntervalList] = useState([
-    {
-      id: '0',
-      hours: '1',
-      mins: '1',
-      secs: '2',
-    },
+    // {
+    //   id: '0',
+    //   hours: '2',
+    //   mins: '3',
+    //   secs: '4',
+    // },
   ]);
 
   // Color theme
@@ -118,10 +118,9 @@ const CreateIntervalScreen = (props) => {
 
     intervalList.forEach((interval) => {
       eventTimersList.push(moment.duration().add(
-        { days: 0, hours: parseInt(interval.minhourss, 10), minutes: parseInt(interval.mins, 10), seconds: parseInt(interval.secs, 10) },
+        { days: 0, hours: parseInt(interval.hours, 10), minutes: parseInt(interval.mins, 10), seconds: parseInt(interval.secs, 10) },
       ));
     });
-    console.log(eventTimersList);
     dispatch(updateTimer(eventTimersList));
   };
 
@@ -204,6 +203,17 @@ const CreateIntervalScreen = (props) => {
             onPress={() => saveInterval()}
             style={styles.longButton}
             text="Use this interval!"
+            textStyle={styles.longButtonTextStyle}
+          >
+            <Ionicons name="md-save" size={28} color={iconColor} />
+          </IconTextButton>
+        </View>
+        <View style={{ ...styles.longButtonContainer }}>
+          <IconTextButton
+            // disabled={isTimerRunning || (!secondsInput && !minutesInput)}
+            onPress={() => saveInterval()}
+            style={styles.longButton}
+            text="Start this interval"
             textStyle={styles.longButtonTextStyle}
           >
             <Ionicons name="md-save" size={28} color={iconColor} />

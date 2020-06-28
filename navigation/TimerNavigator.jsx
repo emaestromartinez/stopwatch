@@ -15,6 +15,7 @@ import useTheme from '../constants/themeHooks';
 
 import TimerScreen, { screenOptions } from '../screens/TimerScreen';
 import CreateIntervalScreen from '../screens/CreateIntervalScreen';
+import DrawerContent from '../screens/DrawerContent';
 
 // const { colors } = useTheme('default');
 
@@ -47,7 +48,7 @@ export const TimerNavigator = () => {
       <TimerStackNavigator.Screen
         name="Timer"
         // component={TimerScreen}
-        component={CreateIntervalScreen}
+        component={TimerScreen}
         options={screenOptions}
         initialParams={{
           colors: { colors },
@@ -60,11 +61,7 @@ export const TimerNavigator = () => {
 export const MainNavigator = () => (
 
   <MainDrawerNavigator.Navigator
-    drawerContent={(props) => (
-      <View style={{ flex: 1, paddingTop: 20, backgroundColor: 'lightgreen' }}>
-        <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }} />
-      </View>
-    )}
+    drawerContent={(props) => <DrawerContent {...props} />}
     drawerContentOptions={{
       // activeTintColor: 'red',
       // labelStyle: {
@@ -79,6 +76,10 @@ export const MainNavigator = () => (
     <MainDrawerNavigator.Screen
       name="Timer"
       component={TimerNavigator}
+    />
+    <MainDrawerNavigator.Screen
+      name="IntervalPicker"
+      component={CreateIntervalScreen}
     />
   </MainDrawerNavigator.Navigator>
 );
