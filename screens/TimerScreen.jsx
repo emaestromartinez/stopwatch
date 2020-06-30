@@ -213,11 +213,11 @@ const TimerScreen = () => {
     >
       <View style={{ ...styles.screen, backgroundColor: colors.screenBackground }}>
         <View style={styles.switchContainer}>
+          <DefaultText> Use saved interval!</DefaultText>
           <Switch
             value={usingSavedInterval}
             onValueChange={useSavedIntervalHandler}
           />
-          <DefaultText> Use saved interval!</DefaultText>
         </View>
         {/* { (usingSavedInterval) && (
 
