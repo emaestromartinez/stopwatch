@@ -99,8 +99,20 @@ const TimerScreen = () => {
   }
 
   // Calculate interval list from saved state;
-  const intervalList = lastSavedInterval;
-  // console.log(intervalList);
+  const intervalList = [];
+
+  lastSavedInterval.forEach((interval, index) => {
+    intervalList.push(
+      {
+        id: index.toString(),
+        days: '0',
+        hours: interval.hours(),
+        mins: interval.minutes(),
+        secs: interval.seconds(),
+      },
+    );
+  });
+  console.log(intervalList);
 
   const startInterval = () => {
     const interval = setInterval(() => {
@@ -283,49 +295,49 @@ const TimerScreen = () => {
   );
 
   const layoutUsingSavedInterval = (
-    <TouchableWithoutFeedback
-      onPress={() => {
-        Keyboard.dismiss();
-      }}
-    >
+    // <TouchableWithoutFeedback
+    //   onPress={() => {
+    //     Keyboard.dismiss();
+    //   }}
+    // >
 
-      <View style={{ ...styles.screen, backgroundColor: colors.screenBackground }}>
+    <View style={{ ...styles.screen, backgroundColor: colors.screenBackground }}>
 
-        {/* { (usingSavedInterval) && (
+      {/* { (usingSavedInterval) && (
 
         )} */}
 
-        <View style={styles.switchContainer}>
-          <DefaultText> Use saved interval!</DefaultText>
-          <Switch
-            value={usingSavedInterval}
-            onValueChange={useSavedIntervalHandler}
+      <View style={intervalListStyles.switchContainer}>
+        <DefaultText> Use saved interval!</DefaultText>
+        <Switch
+          value={usingSavedInterval}
+          onValueChange={useSavedIntervalHandler}
+        />
+      </View>
+
+      <View style={intervalListStyles.content}>
+        <View style={intervalListStyles.intervalList}>
+          <IntervalList
+            intervalList={intervalList}
           />
         </View>
-
-        <View style={styles.content}>
-          <View>
-            <IntervalList
-              intervalList={intervalList}
-            />
-          </View>
-          <View style={styles.buttonsContainer}>
-            <StopStartPauseButtons
-              isTimerRunning={isTimerRunning}
-              isTimerPaused={isTimerPaused}
-              isTimerHidden={isTimerHidden}
-              secondsInput={secondsInput}
-              minutesInput={minutesInput}
-              stopTimerHandler={stopTimerHandler}
-              startTimerHandler={startTimerHandler}
-              resumeTimerHandler={resumeTimerHandler}
-              pauseTimerHandler={pauseTimerHandler}
-            />
-          </View>
+        <View style={styles.buttonsContainer}>
+          <StopStartPauseButtons
+            isTimerRunning={isTimerRunning}
+            isTimerPaused={isTimerPaused}
+            isTimerHidden={isTimerHidden}
+            secondsInput={secondsInput}
+            minutesInput={minutesInput}
+            stopTimerHandler={stopTimerHandler}
+            startTimerHandler={startTimerHandler}
+            resumeTimerHandler={resumeTimerHandler}
+            pauseTimerHandler={pauseTimerHandler}
+          />
         </View>
-
       </View>
-    </TouchableWithoutFeedback>
+
+    </View>
+    // </TouchableWithoutFeedback>
   );
 
   const activeLayout = usingSavedInterval ? layoutUsingSavedInterval : layoutNotUsingSavedInterval;
@@ -354,18 +366,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 35,
     paddingHorizontal: 10,
-  },
-
-  switchContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-  },
-  content: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 
   // Input styles
@@ -421,6 +421,25 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
 
+});
+
+const intervalListStyles = StyleSheet.create({
+  switchContainer: {
+    // flex: 1,
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  content: {
+    flex: 1,
+    height: '30%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  intervalList: {
+    height: '70%',
+  },
 });
 
 export default TimerScreen;

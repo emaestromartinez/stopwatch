@@ -59,19 +59,16 @@ const IntervalList = (props) => {
 const listContainerHeight = '70%';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   // List styles;
   listContainer: {
     width: '100%',
-    height: listContainerHeight,
+    // height: listContainerHeight,
     // height: '75%',
   },
   listItem: {
     flexDirection: 'row',
     width: '100%',
-    height: 42,
+    // height: 42,
     backgroundColor: 'orange',
     alignItems: 'center',
   },

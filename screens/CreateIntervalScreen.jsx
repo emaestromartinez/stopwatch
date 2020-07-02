@@ -103,7 +103,7 @@ const CreateIntervalScreen = (props) => {
       return;
     }
     const newTimer = moment.duration().add(
-      { days: 0, hours: 0, minutes: parseInt(minutesInput, 10), seconds: parseInt(secondsInput, 10) },
+      { minutes: parseInt(minutesInput, 10), seconds: parseInt(secondsInput, 10) },
     );
     setIntervalList((currentList) => [...currentList,
       { id: String(currentList.length + 1), hours: newTimer.hours(), mins: newTimer.minutes() || 0, secs: newTimer.seconds() || 0 },
@@ -115,10 +115,9 @@ const CreateIntervalScreen = (props) => {
 
     intervalList.forEach((interval) => {
       eventTimersList.push(moment.duration().add(
-        { days: 0, hours: parseInt(interval.hours, 10), minutes: parseInt(interval.mins, 10), seconds: parseInt(interval.secs, 10) },
+        { hours: parseInt(interval.hours, 10), minutes: parseInt(interval.mins, 10), seconds: parseInt(interval.secs, 10) },
       ));
     });
-    console.log(eventTimersList);
     dispatch(updateTimer({ lastSavedInterval: eventTimersList }));
   }, [dispatch, intervalList]);
 
